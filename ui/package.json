@@ -1,23 +1,29 @@
 {
   "scripts": {
     "dev": "vite build --watch --mode=development",
-    "build": "run-p type-check \"build-only {@}\" --",
-    "build-only": "vite build",
-    "test:unit": "vitest",
-    "type-check": "vue-tsc --build --force",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "prettier": "prettier --write src/"
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
+    "test:unit": "vitest --environment jsdom",
+    "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@halo-dev/api-client": "^2.17.0",
-    "@halo-dev/components": "^2.17.0",
-    "@halo-dev/console-shared": "^2.17.0",
-    "axios": "^1.7.2",
+    "@halo-dev/api-client": "^2.19.0",
+    "@halo-dev/components": "https://pkg.pr.new/@halo-dev/components@7383",
+    "@halo-dev/console-shared": "^2.19.0",
     "canvas-confetti": "^1.9.3",
-    "vue": "^3.4.31"
+    "vue": "^3.4.31",
+    "@types/lodash.clonedeep": "^4.5.7",
+    "lodash.clonedeep": "^4.5.0",
+    "@vueuse/router": "^10.6.0",
+    "@tanstack/vue-query": "^4.26.1",
+    "dayjs": "^1.11.9",
+    "javascript-time-ago": "^2.5.9",
+    "@vueuse/shared": "^10.9.0",
+    "@formkit/core": "^1.4.0"
   },
   "devDependencies": {
-    "@halo-dev/ui-plugin-bundler-kit": "^2.17.0",
+    "@halo-dev/ui-plugin-bundler-kit": "^2.19.0",
     "@iconify/json": "^2.2.224",
     "@rushstack/eslint-patch": "^1.10.3",
     "@tsconfig/node20": "^20.1.4",

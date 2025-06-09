@@ -1,0 +1,79 @@
+apiVersion: notification.halo.run/v1alpha1
+kind: ReasonType
+metadata:
+  name: admin-link-submit
+  annotations:
+    rbac.authorization.halo.run/ui-permissions: |
+      [ "plugin:link:submit:manage" ]
+spec:
+  displayName: "友链自助提交通知管理员"
+  description: ""
+  properties:
+    - name: email
+      type: string
+      description: "邮箱"
+    - name: displayName
+      type: string
+      description: "博客名称"
+    - name: url
+      type: string
+      description: "博客链接"
+    - name: description
+      type: string
+      description: "博客描述"
+    - name: logo
+      type: string
+      description: "Logo"
+    - name: type
+      type: string
+      description: "类型"
+    - name: review
+      type: boolean
+      description: "审核"
+    - name: reviewUrl
+      type: string
+      description: "审核链接"
+
+---
+
+apiVersion: notification.halo.run/v1alpha1
+kind: ReasonType
+metadata:
+  name: user-link-submit
+spec:
+  displayName: "友链自助提交成功通知"
+  description: ""
+  properties:
+    - name: email
+      type: string
+      description: "邮箱"
+    - name: type
+      type: string
+      description: "类型"
+    - name: review
+      type: boolean
+      description: "审核"
+
+---
+
+apiVersion: notification.halo.run/v1alpha1
+kind: ReasonType
+metadata:
+  name: review-link-submit
+spec:
+  displayName: "友链自助提交审核通知"
+  description: ""
+  properties:
+    - name: email
+      type: string
+      description: "邮箱"
+    - name: type
+      type: string
+      description: "类型"
+    - name: reviewDescription
+      type: string
+      optional: true
+      description: "审核描述"
+    - name: through
+      type: boolean
+      description: "通过"

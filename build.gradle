@@ -17,6 +17,7 @@ repositories {
 
 dependencies {
     implementation platform('run.halo.tools.platform:plugin:2.20.0-SNAPSHOT')
+    implementation 'cn.hutool:hutool-all:5.8.25'
     compileOnly 'run.halo.app:api'
 
     testImplementation 'run.halo.app:api'
@@ -31,26 +32,52 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
 }
 
-node {
-    nodeProjectDir = file("${project.projectDir}/ui")
-}
-
-tasks.register('buildFrontend', PnpmTask) {
-    args = ['build']
-    dependsOn('installDepsForUI')
-}
-
-tasks.register('installDepsForUI', PnpmTask) {
-    args = ['install']
-}
-
-build {
-    // build frontend before build
-    tasks.named('compileJava').configure {
-        dependsOn('buildFrontend')
-    }
-}
+//node {
+//    nodeProjectDir = file("${project.projectDir}/ui")
+//}
+//
+//tasks.register('buildFrontend', PnpmTask) {
+//    args = ['build']
+//    dependsOn('installDepsForUI')
+//}
+//
+//tasks.register('installDepsForUI', PnpmTask) {
+//    args = ['install']
+//}
+//
+//build {
+//    // build frontend before build
+//    tasks.named('compileJava').configure {
+//        dependsOn('buildFrontend')
+//    }
+//}
 
 halo {
-    version = '2.20'
+    version = '2.21.0-beta.1'
+}
+
+haloPlugin {
+    openApi {
+        outputDir = file("$rootDir/api-docs/openapi/v3_0")
+        // 用于定义 API 分组规则
+        groupingRules {
+            // 此名称为 group name，定义后 groupedApiMappings 中的 /v3/api-docs/ 后的名称需要与之相同，要避免与 halo 中已经存在的 group 相同避免生成后出现与插件无关的 API
+            linkSubmitApi {
+                // 分组显示名称
+                displayName = 'Extension API for Plugin linkSubmit'
+                // 分组的 API 规则
+                pathsToMatch = ["/apis/link.submit.kunkunyu.com/v1alpha1/**",
+                                "/apis/console.api.link.submit.kunkunyu.com/v1alpha1/**"
+                ]
+            }
+        }
+        groupedApiMappings = [
+                '/v3/api-docs/linkSubmitApi': 'linkSubmitApi.json'
+        ]
+        generator {
+            // 默认配置可缺省
+            outputDir = file("${projectDir}/ui/src/api/generated")
+        }
+    }
+
 }

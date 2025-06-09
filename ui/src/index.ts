@@ -1,24 +1,25 @@
 import { definePlugin } from "@halo-dev/console-shared";
 import HomeView from "./views/HomeView.vue";
-import { IconPlug } from "@halo-dev/components";
 import { markRaw } from "vue";
+import LinkVariantPlus from "~icons/mdi/link-variant-plus";
 
 export default definePlugin({
   components: {},
   routes: [
     {
-      parentName: "Root",
+      parentName: "ToolsRoot",
       route: {
-        path: "/example",
-        name: "Example",
+        path: "/linkSubmit",
+        name: "友链自助提交插件",
         component: HomeView,
         meta: {
-          title: "示例页面",
+          title: "友链自助提交插件",
+          permissions: ["plugin:link:submit:view"],
           searchable: true,
           menu: {
-            name: "示例页面",
-            group: "示例分组",
-            icon: markRaw(IconPlug),
+            name: "友链自助提交管理",
+            group: "tool",
+            icon: markRaw(LinkVariantPlus),
             priority: 0,
           },
         },

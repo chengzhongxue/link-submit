@@ -1,0 +1,105 @@
+apiVersion: notification.halo.run/v1alpha1
+kind: NotificationTemplate
+metadata:
+  name: template-admin-link-submit
+spec:
+  reasonSelector:
+    reasonType: admin-link-submit
+    language: default
+  template:
+    title: "有新的友链[[${type == 'update' ? '修改' : '提交'}]]申请，[[${review ? '已自动审核' : '请审核'}]]！"
+    rawBody: |
+      [(${subscriber.displayName})] 你好：
+
+        博客信息
+
+        博客名称： [(${displayName})]
+
+        博客链接： [(${url})] 元
+      
+        博客描述： [(${description})]
+
+        Email： [(${email})]
+      
+        Logo： [(${logo})]
+
+    htmlBody: |
+      <div class="content">
+        <div class="head">
+          <p class="honorific" th:text="|${subscriber.displayName} 你好：|"></p>
+        </div>
+        <div class="body">
+          <p>博客信息</p>
+          <div class="summary">
+            <p>博客名称：<span th:text="${displayName}"></span></p>
+            <p>博客链接：<span th:text="${url}"></span></p>
+            <p>博客描述：<span th:text="${description}"></span></p>
+            <p>Email：<span th:text="${email}"></span></p>
+            <p>Logo：<span th:text="${logo}"></span></p>
+          </div>
+          <p><a th:href="${reviewUrl}" target="_blank" rel="noopener noreferrer">前往审核</a></p>
+        </div>
+        <div></div>
+      </div>
+
+---
+
+apiVersion: notification.halo.run/v1alpha1
+kind: NotificationTemplate
+metadata:
+  name: template-user-link-submit
+spec:
+  reasonSelector:
+    reasonType: user-link-submit
+    language: default
+  template:
+    title: "您的友链[[${type == 'update' ? '修改' : '提交'}]]申请已提交。"
+    rawBody: |
+      [(${subscriber.displayName})] 你好：
+
+        [[${ review  ? '请等待审核！' ? '已审核通过。'}]]
+
+    htmlBody: |
+      <div class="content">
+        <div class="head">
+          <p class="honorific" th:text="|${subscriber.displayName} 你好：|"></p>
+        </div>
+        <div class="body">
+          <div class="summary">
+            <p><span th:text="${ review  ? '请等待审核！' ? '已审核通过。'}"></span></p>
+          </div>
+          <p><a th:href="${reviewUrl}" target="_blank" rel="noopener noreferrer">前往审核</a></p>
+        </div>
+        <div></div>
+      </div>
+
+---
+
+apiVersion: notification.halo.run/v1alpha1
+kind: NotificationTemplate
+metadata:
+  name: template-review-link-submit
+spec:
+  reasonSelector:
+    reasonType: review-link-submit
+    language: default
+  template:
+    title: "您的友链[[${type == 'update' ? '修改' : '提交'}]]申请[[${through ? '已通过' : '已拒绝'}]]，请查看！"
+    rawBody: |
+      [(${subscriber.displayName})] 你好：
+
+        审核描述： [(${reviewDescription})]
+
+    htmlBody: |
+      <div class="content">
+        <div class="head">
+          <p class="honorific" th:text="|${subscriber.displayName} 你好：|"></p>
+        </div>
+        <div class="body">
+          <div class="summary">
+            <p><span th:text="|您的链接[[${through ? '已通过审核' : '已拒绝'}]]。|"></span></p>
+            <p>审核描述：<span th:text="${reviewDescription}"></span></p>
+          </div>
+        </div>
+        <div></div>
+      </div>

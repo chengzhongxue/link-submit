@@ -1,0 +1,60 @@
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: role-template-link-submit-anonymous
+  labels:
+    halo.run/hidden: "true"
+    halo.run/role-template: "true"
+    rbac.authorization.halo.run/aggregate-to-anonymous: "true"
+  annotations:
+    rbac.authorization.halo.run/module: "PluginLinkSubmitAnonymous"
+    rbac.authorization.halo.run/display-name: "PluginLinkSubmit Anonymous AccessRole"
+rules:
+  - apiGroups: [ "anonymous.link.submit.kunkunyu.com" ]
+    resources: [ "*" ]
+    verbs: [ "*" ]
+
+
+---
+
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: role-template-link-submit-view
+  labels:
+    halo.run/role-template: "true"
+  annotations:
+    rbac.authorization.halo.run/module: "友链自助提交"
+    rbac.authorization.halo.run/display-name: "友链自助提交查看"
+    rbac.authorization.halo.run/ui-permissions: |
+      ["plugin:link:submit:view"]
+rules:
+  - apiGroups: [ "link.submit.kunkunyu.com" ]
+    resources: [ "linksubmits","cronlinksubmits" ]
+    verbs: [ "get", "list" ]
+  - apiGroups: [ "console.api.link.submit.kunkunyu.com" ]
+    resources: [ "linkgroups"]
+    verbs: [ "get", "list" ]
+
+---
+
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: role-template-link-submit-manage
+  labels:
+    halo.run/role-template: "true"
+  annotations:
+    rbac.authorization.halo.run/module: "友链自助提交"
+    rbac.authorization.halo.run/display-name: "友链自助提交管理"
+    rbac.authorization.halo.run/ui-permissions: |
+      ["plugin:link:submit:manage"]
+    rbac.authorization.halo.run/dependencies: |
+      ["role-template-link-submit-view"]
+rules:
+  - apiGroups: [ "link.submit.kunkunyu.com" ]
+    resources: [ "linksubmits","cronlinksubmits" ]
+    verbs: [ "create", "patch", "update", "delete", "deletecollection" ]
+  - apiGroups: [ "console.api.link.submit.kunkunyu.com" ]
+    resources: [ "linksubmits/check" ]
+    verbs: [ "create", "patch", "update", "delete", "deletecollection" ]

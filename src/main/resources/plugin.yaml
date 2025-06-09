@@ -1,22 +1,23 @@
-# Refer https://docs.halo.run/developer-guide/plugin/basics/manifest
-
 apiVersion: plugin.halo.run/v1alpha1
 kind: Plugin
 metadata:
-  # The name defines how the plugin is invoked, A unique name
-  name: starter
+  name: link-submit
 spec:
   enabled: true
-  requires: ">=2.20.0"
+  requires: ">=2.21.0"
+  pluginDependencies:
+    "PluginLinks": ">=1.5.0"
   author:
-    name: Halo
-    website: https://github.com/halo-dev
+    name: 困困鱼
+    website: https://github.com/chengzhongxue
   logo: logo.png
-  homepage: https://github.com/halo-dev/plugin-starter#readme
-  repo: https://github.com/halo-dev/plugin-starter
-  issues: https://github.com/halo-dev/plugin-starter/issues
-  displayName: "插件快速开始模板"
-  description: "这是一个插件快速开始模板"
+  configMapName: link-submit-configMap
+  settingName: link-submit-settings
+  homepage: https://github.com/chengzhongxue/link-submit#readme
+  repo: https://github.com/chengzhongxuev/link-submit
+  issues: https://github.com/chengzhongxue/link-submit/issues
+  displayName: "友链自助提交插件"
+  description: "访问者可以自助提交友链，并在后台管理页面进行审核。"
   license:
     - name: "GPL-3.0"
-      url: "https://github.com/halo-dev/plugin-starter/blob/main/LICENSE"
+      url: "https://github.com/halo-dev/link-submit/blob/main/LICENSE"

@@ -1,0 +1,55 @@
+apiVersion: v1alpha1
+kind: Setting
+metadata:
+  name: link-submit-settings
+spec:
+  forms:
+    - group: basic
+      label: 基本设置
+      formSchema:
+        - $formkit: radio
+          name: autoAudit
+          label: 是否开启自动审核
+          value: false
+          options:
+            - value: true
+              label: 开启
+            - value: false
+              label: 关闭
+        - $formkit: radio
+          name: sendEmail
+          id: sendEmail
+          key: sendEmail
+          label: 是否发送邮件通知
+          value: false
+          options:
+            - value: true
+              label: 开启
+            - value: false
+              label: 关闭
+        - $formkit: text
+          if: $get(sendEmail).value === true
+          id: adminEmail
+          name: adminEmail
+          key: adminEmail
+          value: ""
+          label: 管理员邮箱
+          help: 管理员邮箱，用于接收邮件通知
+          validation: required|email
+        - $formkit: select
+          id: forbidSelectedGroupName
+          name: forbidSelectedGroupName
+          key: forbidSelectedGroupName
+          label: 禁止自助提交的分组
+          multiple: true
+          clearable: true
+          action: /apis/core.halo.run/v1alpha1/linkgroups
+          requestOption:
+            method: GET
+            pageField: page
+            sizeField: size
+            totalField: total
+            itemsField: items
+            labelField: spec.displayName
+            valueField: metadata.name
+          help: 友链提交页面中禁止显示的分组，多个请使用英文逗号分隔，如：group1,group2
