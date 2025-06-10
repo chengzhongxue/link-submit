@@ -20,4 +20,4 @@ spec:
   description: "访问者可以自助提交友链，并在后台管理页面进行审核。"
   license:
     - name: "GPL-3.0"
-      url: "https://github.com/halo-dev/link-submit/blob/main/LICENSE"
+      url: "https://github.com/chengzhongxue/link-submit/blob/main/LICENSE"
