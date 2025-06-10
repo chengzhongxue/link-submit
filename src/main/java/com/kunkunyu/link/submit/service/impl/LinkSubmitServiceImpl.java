@@ -96,7 +96,9 @@ public class LinkSubmitServiceImpl implements LinkSubmitService {
                 linkSubmitSpec.setDisplayName(displayName);
                 linkSubmitSpec.setLogo(logo);
                 linkSubmitSpec.setDescription(createLinkSubmitRequest.getDescription());
-                linkSubmitSpec.setUpdateDescription(createLinkSubmitRequest.getUpdateDescription());
+                if (type.equals(LinkSubmit.LinkSubmitType.update)) {
+                    linkSubmitSpec.setUpdateDescription(createLinkSubmitRequest.getUpdateDescription());
+                }
                 linkSubmitSpec.setEmail(email);
                 linkSubmitSpec.setGroupName(createLinkSubmitRequest.getGroupName());
                 linkSubmitSpec.setRssUrl(createLinkSubmitRequest.getRssUrl());

@@ -23,6 +23,7 @@ import run.halo.app.extension.ReactiveExtensionClient;
 import run.halo.app.extension.Unstructured;
 import run.halo.app.extension.router.selector.FieldSelector;
 
+import static org.springframework.data.domain.Sort.Order.asc;
 import static org.springframework.data.domain.Sort.Order.desc;
 
 
@@ -46,7 +47,7 @@ public class LinkServiceImpl implements LinkService {
     public Flux<LinkGroupVo> listGroup() {
         var listOptions = new ListOptions();
         listOptions.setFieldSelector(FieldSelector.all());
-        return client.listAll(LinkGroup.class, listOptions, Sort.by(desc("metadata.creationTimestamp"),desc("spec.priority")))
+        return client.listAll(LinkGroup.class, listOptions, defaultLinkSort())
             .map(LinkGroupVo::from);
     }
 
@@ -134,5 +135,12 @@ public class LinkServiceImpl implements LinkService {
             var linkNew = objectMapper.convertValue(unstructured, Link.class);
             return Mono.just(linkNew);
         });
+    }
+
+    static Sort defaultLinkSort() {
+        return Sort.by(asc("spec.priority"),
+            asc("metadata.creationTimestamp"),
+            asc("metadata.name")
+        );
     }
 }

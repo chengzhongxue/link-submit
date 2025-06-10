@@ -1,6 +1,10 @@
+# link-submit
+- 支持自助提交和修改友链
 
 
 ## 主题适配
+
+- 插件适配了友链页面提交按钮，如果不满意可以自己根据api来适配
 
 ### 调用搜索弹框
 
@@ -9,7 +13,7 @@
 ```html
 <div th:if="${pluginFinder.available('link-submit')}">
     <a href="javascript:LinkSubmitWidget.open()" title="提交友链">
-        搜索
+        提交友链
     </a>
 </div>
 ```
