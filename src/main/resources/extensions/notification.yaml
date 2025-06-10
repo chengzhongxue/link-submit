@@ -7,7 +7,7 @@ metadata:
       [ "plugin:link:submit:manage" ]
 spec:
   displayName: "友链自助提交通知管理员"
-  description: ""
+  description: "友链自助提交通知管理员"
   properties:
     - name: email
       type: string
@@ -42,7 +42,7 @@ metadata:
   name: user-link-submit
 spec:
   displayName: "友链自助提交成功通知"
-  description: ""
+  description: "友链自助提交成功通知"
   properties:
     - name: email
       type: string
@@ -62,7 +62,7 @@ metadata:
   name: review-link-submit
 spec:
   displayName: "友链自助提交审核通知"
-  description: ""
+  description: "友链自助提交审核通知"
   properties:
     - name: email
       type: string

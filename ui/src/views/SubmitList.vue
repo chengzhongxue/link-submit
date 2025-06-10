@@ -15,10 +15,11 @@ import {computed, ref, watch} from "vue";
 import { formatDatetime } from "@/utils/date";
 import {useRouteQuery} from "@vueuse/router";
 import {linkSubmitApiClient, linkSubmitCoreApiClient} from "@/api";
-import {type LinkSubmit} from "@/api/generated";
+import {type LinkSubmit, LinkSubmitSpecStatusEnum} from "@/api/generated";
 import {axiosInstance} from "@halo-dev/api-client";
 import type {LinkGroup, LinkGroupList} from "@/domain";
 import {linkSubmitStatusOptions, linkSubmitTypeOptions} from "@/constant";
+import CheckModal from "@/components/CheckModal.vue";
 
 const queryClient = useQueryClient();
 
@@ -208,9 +209,20 @@ function typeText (type:string) {
   return item ? item.label : "未知";
 }
 
-</script>
+const linkSubmitCheckModal = ref(false);
+const selectedLinkSubmit = ref<LinkSubmit>();
+const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
+  selectedLinkSubmit.value = linkSubmit;
+  linkSubmitCheckModal.value = true;
+};
 
+</script>
 <template>
+  <CheckModal
+    v-if="linkSubmitCheckModal"
+    :link-submit="selectedLinkSubmit"
+    @close="linkSubmitCheckModal = false"
+  />
   <VCard :body-class="['!p-0']">
     <template #header>
       <div class="block w-full bg-gray-50 px-4 py-3">
@@ -367,12 +379,44 @@ function typeText (type:string) {
                    {{ getGroup(linkSubmit?.spec.groupName || '') }}
                  </span>
                </td>
-               <td class="px-4 py-4 table-td">{{ statusText(linkSubmit?.spec.status) }}</td>
-               <td class="px-4 py-4 table-td">{{ typeText(linkSubmit?.spec.type) }}</td>
+               <td class="px-4 py-4 table-td">
+                 <span
+                   :style="{
+                     'background': linkSubmit?.spec.status === 'review' ? '#D1FAE5'
+                       : linkSubmit?.spec.status === 'pending' ? '#956444'
+                       : linkSubmit?.spec.status === 'refuse' ? '#FECACA'
+                       : '',
+                     'color': linkSubmit?.spec.status === 'review' ? '#0c9672'
+                       : linkSubmit?.spec.status === 'pending' ? '#ffffff'
+                       : linkSubmit?.spec.status === 'refuse' ? '#B91C1C'
+                       : '',
+                     'padding': '0.25rem 0.5rem',
+                     'borderRadius': '0.25rem',
+                     'fontSize': '0.75rem',
+                     'fontWeight': '600',
+                     'display': 'inline-block'
+                   }"
+                 >
+                   {{ statusText(linkSubmit?.spec.status) }}
+                 </span>
+               </td>
+               <td class="px-4 py-4 table-td">
+                 <span
+                   :style="{
+                     'border': '1px solid ' + (linkSubmit?.spec.type === 'add' ? '#3B82F6' : '#A78BFA'),
+                     'color': linkSubmit?.spec.type === 'add' ? '#2563EB' : '#7C3AED',
+                     'padding': '0.25rem 0.5rem',
+                     'borderRadius': '0.25rem',
+                     'fontSize': '0.75rem',
+                     'display': 'inline-block'
+                   }"
+                 >
+                   {{ typeText(linkSubmit?.spec.type) }}
+                 </span>
+               </td>
                <td class="px-4 py-4 table-td">{{ formatDatetime(linkSubmit?.metadata.creationTimestamp) }}</td>
                <td class="px-4 py-4 table-td" v-permission="['plugin:link:submit:manage']">
-                 <button>审核</button>&nbsp;&nbsp;
-                 <button>修改链接</button>&nbsp;&nbsp;
+                 <button v-if="linkSubmit.spec.status == LinkSubmitSpecStatusEnum.Pending" @click="handleOpenCheckModal(linkSubmit)">审核</button>&nbsp;&nbsp;
                  <button @click="handleDelete(linkSubmit)">删除</button>
                </td>
              </tr>

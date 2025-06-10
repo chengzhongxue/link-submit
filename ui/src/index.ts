@@ -9,7 +9,7 @@ export default definePlugin({
     {
       parentName: "ToolsRoot",
       route: {
-        path: "/linkSubmit",
+        path: "/link-submit",
         name: "友链自助提交插件",
         component: HomeView,
         meta: {

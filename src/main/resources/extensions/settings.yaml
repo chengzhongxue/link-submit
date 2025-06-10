@@ -7,15 +7,22 @@ spec:
     - group: basic
       label: 基本设置
       formSchema:
-        - $formkit: radio
+        - $formkit: checkbox
+          name: loadPlugInResources
+          id: loadPlugInResources
+          label: 加载插件资源
+          help: 主题自己适配提交弹框的可以关闭
+          value: true
+        - $formkit: checkbox
+          if: $get(loadPlugInResources).value
+          name: displayTheSubmitButton
+          label: 显示提交按钮
+          help: 显示页面提交按钮
+          value: true
+        - $formkit: checkbox
           name: autoAudit
-          label: 是否开启自动审核
+          label: 开启自动审核
           value: false
-          options:
-            - value: true
-              label: 开启
-            - value: false
-              label: 关闭
         - $formkit: radio
           name: sendEmail
           id: sendEmail
@@ -37,6 +44,22 @@ spec:
           help: 管理员邮箱，用于接收邮件通知
           validation: required|email
         - $formkit: select
+          id: groupName
+          name: groupName
+          key: groupName
+          label: 默认友链分组
+          clearable: true
+          action: /apis/core.halo.run/v1alpha1/linkgroups
+          requestOption:
+            method: GET
+            pageField: page
+            sizeField: size
+            totalField: total
+            itemsField: items
+            labelField: spec.displayName
+            valueField: metadata.name
+          validation: required
+        - $formkit: select
           id: forbidSelectedGroupName
           name: forbidSelectedGroupName
           key: forbidSelectedGroupName
@@ -52,4 +75,4 @@ spec:
             itemsField: items
             labelField: spec.displayName
             valueField: metadata.name
-          help: 友链提交页面中禁止显示的分组，多个请使用英文逗号分隔，如：group1,group2
+          help: 友链提交页面中禁止显示的分组

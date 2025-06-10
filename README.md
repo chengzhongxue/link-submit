@@ -1,76 +1,41 @@
-# plugin-starter
 
-Halo 2.0 插件开发快速开始模板。
 
-## 开发环境
+## 主题适配
 
-插件开发的详细文档请查阅：<https://docs.halo.run/developer-guide/plugin/introduction>
+### 调用搜索弹框
 
-所需环境：
+此插件是一个通用的提交友链框插件，主题需要做的只是通过 JS API 唤起提交友链框即可，以下是代码示例：
 
-1. Java 17
-2. Node 20
-3. pnpm 9
-4. Docker (可选)
-
-克隆项目：
-
-```bash
-git clone git@github.com:halo-sigs/plugin-starter.git
-
-# 或者当你 fork 之后
-
-git clone git@github.com:{your_github_id}/plugin-starter.git
+```html
+<div th:if="${pluginFinder.available('link-submit')}">
+    <a href="javascript:LinkSubmitWidget.open()" title="提交友链">
+        搜索
+    </a>
+</div>
 ```
 
-```bash
-cd path/to/plugin-starter
-```
+其中，`pluginFinder.available('link-submit')` 的作用是判断使用者是否安装和启用了此插件，如果没有安装或者没有启用，那么就不会显示提交友链入口。
 
-### 运行方式 1（推荐）
 
-> 此方式需要本地安装 Docker
+### 自定义样式
 
-```bash
-# macOS / Linux
-./gradlew pnpmInstall
+虽然目前不能直接为提交友链组件编写额外的样式，但可以通过一系列的 CSS 变量来自定义部分样式，开发者可以根据需求自行在主题中添加这些 CSS 变量，让提交友链组件和主题更好地融合。
 
-# Windows
-./gradlew.bat pnpmInstall
-```
+目前已提供的 CSS 变量：
 
-```bash
-# macOS / Linux
-./gradlew haloServer
+| 变量名                                              | 描述              |
+|-----------------------------------------------------|-----------------|
+| `--link-submit-widget-base-font-size`               | 基础字体大小       |
+| `--link-submit-widget-base-font-family`             | 字体              |
+| `--link-submit-widget-base-rounded`                 | 边框圆角           |
+| `--link-submit-widget-base-bg-color`                | 基础背景色         |
+| `--link-submit-widget-modal-layer-color`            | 模态框遮挡层背景色 |
+| `--link-submit-widget-form-bg-color`                | 表单背景色         |
+| `--link-submit-widget-form-border-color`            | 表单边框色         |
+| `--link-submit-widget-form-text-color`              | 表单文本色         |
+| `--link-submit-widget-form-label-color`             | 表单标签色         |
+| `--link-submit-widget-form-placeholder-color`       | 表单占位符色       |
+| `--link-submit-widget-form-button-bg-color`         | 按钮背景色         |
+| `--link-submit-widget-form-button-text-color`       | 按钮文本色         |
+| `--link-submit-widget-form-button-hover-bg-color`   | 按钮悬停背景色     |
 
-# Windows
-./gradlew.bat haloServer
-```
-
-执行此命令后，会自动创建一个 Halo 的 Docker 容器并加载当前的插件，更多文档可查阅：<https://docs.halo.run/developer-guide/plugin/basics/devtools>
-
-### 运行方式 2
-
-> 此方式需要使用源码运行 Halo
-
-编译插件：
-
-```bash
-# macOS / Linux
-./gradlew build
-
-# Windows
-./gradlew.bat build
-```
-
-修改 Halo 配置文件：
-
-```yaml
-halo:
-  plugin:
-    runtime-mode: development
-    fixedPluginPath:
-      - "/path/to/plugin-starter"
-```
-
-最后重启 Halo 项目即可。

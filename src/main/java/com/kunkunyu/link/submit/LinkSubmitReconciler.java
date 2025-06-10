@@ -14,6 +14,7 @@ import run.halo.app.extension.controller.Controller;
 import run.halo.app.extension.controller.ControllerBuilder;
 import run.halo.app.extension.controller.Reconciler;
 import run.halo.app.notification.NotificationCenter;
+import run.halo.app.notification.UserIdentity;
 import java.util.Set;
 
 import static com.kunkunyu.link.submit.Constant.ADMIN_LINK_SUBMIT;
@@ -59,7 +60,8 @@ public class LinkSubmitReconciler implements Reconciler<Reconciler.Request> {
                     if (sendEmail) {
                         adminNoticeSubscription(basicConfig.getAdminEmail());
                     }
-                    if (StringUtils.isNotEmpty(email)) {
+                    var status = spec.getStatus();
+                    if (StringUtils.isNotEmpty(email) && status.equals(LinkSubmit.LinkSubmitStatus.pending)) {
                         userNoticeSubscription(email);
                     }
                     eventPublisher.publishEvent(new LinkSubmitEvent(this, linkSubmit));
@@ -82,7 +84,7 @@ public class LinkSubmitReconciler implements Reconciler<Reconciler.Request> {
         interestReason.setReasonType(ADMIN_LINK_SUBMIT);
         interestReason.setExpression("props.email == '%s'".formatted(email));
         var subscriber = new Subscription.Subscriber();
-        subscriber.setName(email);
+        subscriber.setName(UserIdentity.anonymousWithEmail(email).name());
         notificationCenter.subscribe(subscriber, interestReason).block();
     }
 
@@ -91,7 +93,7 @@ public class LinkSubmitReconciler implements Reconciler<Reconciler.Request> {
         interestReason.setReasonType(USER_LINK_SUBMIT);
         interestReason.setExpression("props.email == '%s'".formatted(email));
         var subscriber = new Subscription.Subscriber();
-        subscriber.setName(email);
+        subscriber.setName(UserIdentity.anonymousWithEmail(email).name());
         notificationCenter.subscribe(subscriber, interestReason).block();
     }
 
@@ -100,7 +102,7 @@ public class LinkSubmitReconciler implements Reconciler<Reconciler.Request> {
         interestReason.setReasonType(REVIEW_LINK_SUBMIT);
         interestReason.setExpression("props.email == '%s'".formatted(email));
         var subscriber = new Subscription.Subscriber();
-        subscriber.setName(email);
+        subscriber.setName(UserIdentity.anonymousWithEmail(email).name());
         notificationCenter.subscribe(subscriber, interestReason).block();
     }
 

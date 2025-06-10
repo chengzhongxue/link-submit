@@ -54,7 +54,7 @@ public class AnonymousEndpoint implements CustomEndpoint {
                     .tag(tag)
                     .response(
                         responseBuilder()
-                            .implementation(ListResult.generateGenericClass(LinkGroupVo.class))
+                            .implementationArray(LinkGroupVo.class)
                     );
             })
             .POST("linksubmits/-/submit", this::submit,

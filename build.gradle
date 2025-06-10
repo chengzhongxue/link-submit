@@ -32,28 +32,46 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
 }
 
-//node {
-//    nodeProjectDir = file("${project.projectDir}/ui")
-//}
-//
-//tasks.register('buildFrontend', PnpmTask) {
-//    args = ['build']
-//    dependsOn('installDepsForUI')
-//}
-//
-//tasks.register('installDepsForUI', PnpmTask) {
-//    args = ['install']
-//}
-//
-//build {
-//    // build frontend before build
-//    tasks.named('compileJava').configure {
-//        dependsOn('buildFrontend')
-//    }
-//}
+node {
+    nodeProjectDir = file("${project.projectDir}")
+}
+
+tasks.register('buildFrontend', PnpmTask) {
+    args = ['build']
+    dependsOn('installDepsForUI')
+}
+
+tasks.register('installDepsForUI', PnpmTask) {
+    args = ['install']
+}
+
+build {
+    // build frontend before build
+    tasks.named('compileJava').configure {
+        dependsOn('buildFrontend')
+    }
+}
 
 halo {
     version = '2.21.0-beta.1'
+    superAdminUsername = 'admin'
+    superAdminPassword = 'admin'
+    externalUrl = 'http://localhost:8081'
+    docker {
+        // windows 需要改为 npipe:////./pipe/docker_engine
+        // linux、macos 需要改为 unix:///var/run/docker.sock
+        url = 'npipe:////./pipe/docker_engine'
+        apiVersion = '1.47'
+    }
+    port = 8081
+
+    // 开启 debug 断点模式
+    debug = true
+    debugPort = 5005
+
+    containerName = 'link-submit'
+    // 控制台会挂起，等待点击 Attach debugger 按钮
+    suspend = true
 }
 
 haloPlugin {

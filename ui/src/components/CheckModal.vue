@@ -1,18 +1,19 @@
 <script lang="ts" setup>
 import {Toast, VButton, VModal, VSpace} from "@halo-dev/components";
 import {defineEmits, ref, watch, nextTick} from "vue";
-import type {LinkSubmit} from "@/api/generated";
-import {linkSubmitApiClient, linkSubmitCoreApiClient} from "@/api";
-import { submitForm } from "@formkit/core";
+import {type CheckLinkSubmitRequest, type LinkSubmit, LinkSubmitSpecTypeEnum} from "@/api/generated";
+import {linkSubmitApiClient} from "@/api";
 import {useQueryClient} from "@tanstack/vue-query";
+import {axiosInstance} from "@halo-dev/api-client";
+import type {LinkList} from "@/domain";
 
 const props = withDefaults(
-    defineProps<{
-      linkSubmit?: LinkSubmit;
-    }>(),
-    {
-      linkSubmit: undefined,
-    }
+  defineProps<{
+    linkSubmit?: LinkSubmit;
+  }>(),
+  {
+    linkSubmit: undefined,
+  }
 );
 
 const emit = defineEmits<{
@@ -20,7 +21,7 @@ const emit = defineEmits<{
 }>();
 
 const saving = ref<boolean>(false);
-const formState = ref({
+const formState = ref<CheckLinkSubmitRequest>({
   checkStatus: true,
   reason: "",
 })
@@ -31,8 +32,9 @@ const modal = ref<InstanceType<typeof VModal> | null>(null);
 const handleCheck = async () => {
   try {
     saving.value = true;
-    await linkSubmitApiClient.linkSubmit.createTag({
-      tag: formState.value,
+    await linkSubmitApiClient.linkSubmit.check({
+      name: props.linkSubmit.metadata.name,
+      checkLinkSubmitRequest: formState.value,
     });
     modal.value?.close();
     Toast.success('保存成功');
@@ -46,11 +48,37 @@ const handleCheck = async () => {
   }
 };
 
+const handleSelectLinkRemote = {
+  search: async ({ keyword, page, size }: { keyword: string; page: number; size: number }) => {
+    const { data } = await axiosInstance.get<LinkList>(
+      `/apis/api.plugin.halo.run/v1alpha1/plugins/PluginLinks/links`,{
+        params: {
+          page: page,
+          size: size,
+          keyword: keyword,
+        },
+      }
+    );
+    return {
+      options: data.items.map((item) => ({
+        label: item.spec?.displayName,
+        value: item.metadata.name,
+      })),
+      total: data.total,
+      page: data.page,
+      size: data.size,
+    };
+  },
+  findOptionsByValues: () => {
+    return [];
+  },
+};
+
 </script>
 <template>
   <VModal
     ref="modal"
-    title="审核操作"
+    :title="linkSubmit.spec.type == LinkSubmitSpecTypeEnum.Add ? '友链提交审核' : '友链修改审核'"
     :width="650"
     @close="emit('close')"
   >
@@ -71,6 +99,17 @@ const handleCheck = async () => {
         name="checkStatus"
         type="select"
       ></FormKit>
+      <FormKit
+        v-if="linkSubmit.spec.type == LinkSubmitSpecTypeEnum.Update"
+        type="select"
+        label="链接"
+        name="linkName"
+        help="选择修改的友链"
+        searchable
+        remote
+        :remote-option="handleSelectLinkRemote"
+        validation="required"
+      />
       <FormKit
         v-if="formState.checkStatus === false"
         type="textarea"

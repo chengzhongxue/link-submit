@@ -50,11 +50,11 @@ public class NotificationReasonPublisher {
         if (sendEmail) {
             adminLinkSubmitNoticeReasonPublisher.publishReasonBy(linkSubmit,basicConfig.getAdminEmail());
         }
+        var status = linkSubmit.getSpec().getStatus();
         String email = linkSubmit.getSpec().getEmail();
-        if (StringUtils.isNotEmpty(email)) {
+        if (StringUtils.isNotEmpty(email) && status.equals(LinkSubmit.LinkSubmitStatus.pending)) {
             userLinkSubmitNoticeReasonPublisher.publishReasonBy(linkSubmit,email);
         }
-
     }
 
     @Async
@@ -171,7 +171,7 @@ public class NotificationReasonPublisher {
         public void publishReasonBy(LinkSubmit linkSubmit,String email) {
             var annotations = MetadataUtil.nullSafeAnnotations(linkSubmit);
             String reviewDescription = annotations.get(REVIEW_DESCRIPTION);
-            String url = externalLinkProcessor.processLink("/console/linksubmit");
+            String url = externalLinkProcessor.processLink("/console/link-submit");
             var spec = linkSubmit.getSpec();
             var reasonSubject = Reason.Subject.builder()
                 .apiVersion(linkSubmit.getApiVersion())
@@ -186,7 +186,7 @@ public class NotificationReasonPublisher {
                         .email(email)
                         .type(spec.getType().name())
                         .reviewDescription(reviewDescription)
-                        .review(spec.getStatus().equals(LinkSubmit.LinkSubmitStatus.review))
+                        .through(spec.getStatus().equals(LinkSubmit.LinkSubmitStatus.review))
                         .build();
                     builder.attributes(ReasonDataConverter.toAttributeMap(attributes))
                         .author(UserIdentity.anonymousWithEmail(email))
@@ -196,7 +196,7 @@ public class NotificationReasonPublisher {
 
 
         @Builder
-        record ReasonData(String email, String type, String reviewDescription, Boolean review) {
+        record ReasonData(String email, String type, String reviewDescription, Boolean through) {
         }
     }
 

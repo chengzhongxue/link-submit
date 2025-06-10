@@ -16,12 +16,7 @@ import java.net.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * @author: lywq
- * @date: 2023/12/23 19:24
- * @version: v1.0.0
- * @description: 友情链接工具类
- **/
+
 @Slf4j
 public class LinkUtil {
 

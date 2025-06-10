@@ -1,0 +1,55 @@
+/* Light mode (default) */
+:root {
+  --link-submit-widget-base-bg-color: #ffffff;
+  --link-submit-widget-modal-layer-color: rgb(107 114 128 / 0.75);
+  --link-submit-widget-base-rounded: 0.4em;
+  
+  /* Form variables */
+  --link-submit-widget-form-bg-color: #ffffff;
+  --link-submit-widget-form-border-color: #e5e7eb;
+  --link-submit-widget-form-text-color: #111827;
+  --link-submit-widget-form-label-color: #1f2937;
+  --link-submit-widget-form-placeholder-color: #9ca3af;
+  --link-submit-widget-form-button-bg-color: #111827;
+  --link-submit-widget-form-button-text-color: #ffffff;
+  --link-submit-widget-form-button-hover-bg-color: #1f2937;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .color-scheme-auto,
+  [data-color-scheme='auto'] {
+    color-scheme: dark;
+    --link-submit-widget-base-bg-color: #090a11;
+    --link-submit-widget-modal-layer-color: #000000cc;
+    
+    /* Form variables */
+    --link-submit-widget-form-bg-color: #1f2937;
+    --link-submit-widget-form-border-color: #374151;
+    --link-submit-widget-form-text-color: #f3f4f6;
+    --link-submit-widget-form-label-color: #e5e7eb;
+    --link-submit-widget-form-placeholder-color: #6b7280;
+    --link-submit-widget-form-button-bg-color: #f3f4f6;
+    --link-submit-widget-form-button-text-color: #111827;
+    --link-submit-widget-form-button-hover-bg-color: #e5e7eb;
+  }
+}
+
+/* Force dark mode */
+.color-scheme-dark,
+.dark,
+[data-color-scheme='dark'] {
+  color-scheme: dark;
+  --link-submit-widget-base-bg-color: #090a11;
+  --link-submit-widget-modal-layer-color: #000000cc;
+  
+  /* Form variables */
+  --link-submit-widget-form-bg-color: #1f2937;
+  --link-submit-widget-form-border-color: #374151;
+  --link-submit-widget-form-text-color: #f3f4f6;
+  --link-submit-widget-form-label-color: #e5e7eb;
+  --link-submit-widget-form-placeholder-color: #6b7280;
+  --link-submit-widget-form-button-bg-color: #f3f4f6;
+  --link-submit-widget-form-button-text-color: #111827;
+  --link-submit-widget-form-button-hover-bg-color: #e5e7eb;
+}

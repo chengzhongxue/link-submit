@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 import run.halo.app.extension.ListOptions;
 import run.halo.app.extension.ListResult;
@@ -75,12 +76,12 @@ public class LinkSubmitServiceImpl implements LinkSubmitService {
         String domain = LinkUtil.getDomain(url);
         return linkService.isExists(domain)
             .flatMap(exists -> {
-                if (type.equals(LinkSubmit.LinkSubmitType.add.name())) {
+                if (type.equals(LinkSubmit.LinkSubmitType.add)) {
                     if (exists) {
                         return Mono.error(new ServerWebInputException("链接已存在！"));
                     }
                 }
-                if (type.equals(LinkSubmit.LinkSubmitType.update.name())) {
+                if (type.equals(LinkSubmit.LinkSubmitType.update)) {
                     if (!exists) {
                         return Mono.error(new ServerWebInputException("链接不存在，请提交链接，而不是提交修改链接！"));
                     }
@@ -92,7 +93,7 @@ public class LinkSubmitServiceImpl implements LinkSubmitService {
                 linkSubmit.setMetadata(metadata);
                 LinkSubmit.LinkSubmitSpec linkSubmitSpec = new LinkSubmit.LinkSubmitSpec();
                 linkSubmitSpec.setUrl(url);
-                linkSubmitSpec.setDescription(displayName);
+                linkSubmitSpec.setDisplayName(displayName);
                 linkSubmitSpec.setLogo(logo);
                 linkSubmitSpec.setDescription(createLinkSubmitRequest.getDescription());
                 linkSubmitSpec.setUpdateDescription(createLinkSubmitRequest.getUpdateDescription());
@@ -107,6 +108,7 @@ public class LinkSubmitServiceImpl implements LinkSubmitService {
     }
 
     @Override
+    @Transactional
     public Mono<LinkSubmit> checkLink(String name,LinkSubmitEndpoint.CheckLinkSubmitRequest checkLinkSubmitRequest) {
         return client.fetch(LinkSubmit.class,name)
             .filter(linkSubmit -> linkSubmit.getSpec().getStatus().equals(LinkSubmit.LinkSubmitStatus.pending))
@@ -124,7 +126,7 @@ public class LinkSubmitServiceImpl implements LinkSubmitService {
                 spec.setStatus(checkStatus ? LinkSubmit.LinkSubmitStatus.review : LinkSubmit.LinkSubmitStatus.refuse);
                 if (spec.getType().equals(LinkSubmit.LinkSubmitType.add)) {
                     if (checkStatus) {
-                        return client.create(linkSubmit)
+                        return linkService.create(linkSubmit)
                             .then(client.update(linkSubmit));
                     }
                     return client.update(linkSubmit);
