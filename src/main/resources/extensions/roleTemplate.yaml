@@ -33,7 +33,7 @@ rules:
     resources: [ "linksubmits","cronlinksubmits" ]
     verbs: [ "get", "list" ]
   - apiGroups: [ "console.api.link.submit.kunkunyu.com" ]
-    resources: [ "linkgroups"]
+    resources: [ "linksubmits"]
     verbs: [ "get", "list" ]
 
 ---

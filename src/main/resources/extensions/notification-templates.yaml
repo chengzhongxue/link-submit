@@ -57,7 +57,7 @@ spec:
     rawBody: |
       [(${subscriber.displayName})] 你好：
 
-        [[${ review  ? '已审核通过。' : '请等待审核！' }]]
+        请等待审核！
 
     htmlBody: |
       <div class="content">
@@ -66,7 +66,7 @@ spec:
         </div>
         <div class="body">
           <div class="summary">
-            <p><span th:text="${ review  ? '已审核通过。' : '请等待审核！'}"></span></p>
+            <p><span>请等待审核！</span></p>
           </div>
         </div>
         <div></div>

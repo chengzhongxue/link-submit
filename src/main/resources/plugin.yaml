@@ -10,7 +10,7 @@ spec:
   author:
     name: 困困鱼
     website: https://github.com/chengzhongxue
-  logo: logo.png
+  logo: logo.svg
   configMapName: link-submit-configMap
   settingName: link-submit-settings
   homepage: https://github.com/chengzhongxue/link-submit#readme

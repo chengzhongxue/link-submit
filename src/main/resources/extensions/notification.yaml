@@ -7,7 +7,7 @@ metadata:
       [ "plugin:link:submit:manage" ]
 spec:
   displayName: "友链自助提交通知管理员"
-  description: "友链自助提交通知管理员"
+  description: "有提交的友链通知管理员"
   properties:
     - name: email
       type: string
@@ -42,7 +42,7 @@ metadata:
   name: user-link-submit
 spec:
   displayName: "友链自助提交成功通知"
-  description: "友链自助提交成功通知"
+  description: "提交没开启自动审核时通知"
   properties:
     - name: email
       type: string
@@ -50,9 +50,6 @@ spec:
     - name: type
       type: string
       description: "类型"
-    - name: review
-      type: boolean
-      description: "审核"
 
 ---
 
@@ -62,7 +59,7 @@ metadata:
   name: review-link-submit
 spec:
   displayName: "友链自助提交审核通知"
-  description: "友链自助提交审核通知"
+  description: "管理员审核完成通知"
   properties:
     - name: email
       type: string

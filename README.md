@@ -2,6 +2,17 @@
 - 支持自助提交和修改友链
 
 
+## 📃文档
+https://docs.kunkunyu.com/docs/link-submit
+
+
+## 交流群
+* 添加企业微信 （备注进群）
+  <img width="360" src="https://api.minio.yyds.pink/kunkunyu/files/2025/02/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250212142105-pbceif.jpg" />
+
+* QQ群
+  <img width="360" src="https://api.minio.yyds.pink/kunkunyu/files/2025/05/qq-708998089-iqowsh.webp" />
+
 ## 主题适配
 
 - 插件适配了友链页面提交按钮，如果不满意可以自己根据api来适配
