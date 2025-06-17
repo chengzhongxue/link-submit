@@ -223,18 +223,18 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
     :link-submit="selectedLinkSubmit"
     @close="linkSubmitCheckModal = false"
   />
-  <VCard :body-class="['!p-0']">
+  <VCard :body-class="[':uno: !p-0']">
     <template #header>
-      <div class="block w-full bg-gray-50 px-4 py-3">
-        <div class="relative flex flex-col flex-wrap items-start gap-4 sm:flex-row sm:items-center" >
-          <div class="hidden items-center sm:flex" v-permission="['plugin:link:submit:manage']">
+      <div class=":uno: block w-full bg-gray-50 px-4 py-3">
+        <div class=":uno: relative flex flex-col flex-wrap items-start gap-4 sm:flex-row sm:items-center" >
+          <div class=":uno: hidden items-center sm:flex" v-permission="['plugin:link:submit:manage']">
             <input
               v-model="checkedAll"
               type="checkbox"
               @change="handleCheckAllChange"
             />
           </div>
-          <div class="flex w-full flex-1 items-center sm:w-auto" >
+          <div class=":uno: flex w-full flex-1 items-center sm:w-auto" >
             <VSpace v-if="selectedLinkSubmits.length" v-permission="['plugin:link:submit:manage']">
               <VButton type="danger" @click="handleDeleteInBatch">
                 删除
@@ -245,7 +245,7 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
               v-model="keyword"
             />
           </div>
-          <VSpace spacing="lg" class="flex-wrap">
+          <VSpace spacing="lg" class=":uno: flex-wrap">
             <FilterCleanButton
               v-if="hasFilters"
               @click="handleClearFilters"
@@ -272,15 +272,15 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
                   ...linkSubmitTypeOptions
               ]"
             />
-            <div class="flex flex-row gap-2">
+            <div class=":uno: flex flex-row gap-2">
               <div
-                class="group cursor-pointer rounded p-1 hover:bg-gray-200"
+                class=":uno: group cursor-pointer rounded p-1 hover:bg-gray-200"
                 @click="refetch()"
               >
                 <IconRefreshLine
                   v-tooltip="'刷新'"
                   :class="{ 'animate-spin text-gray-900': isFetching }"
-                  class="h-4 w-4 text-gray-600 group-hover:text-gray-900"
+                  class=":uno: h-4 w-4 text-gray-600 group-hover:text-gray-900"
                 />
               </div>
             </div>
@@ -304,62 +304,62 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
     </Transition>
 
     <Transition v-else appear name="fade">
-      <div class="w-full relative overflow-x-auto">
-        <table class="w-full text-sm text-left text-gray-500">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+      <div class=":uno: w-full relative overflow-x-auto">
+        <table class=":uno: w-full text-sm text-left text-gray-500">
+          <thead class=":uno: text-xs text-gray-700 uppercase bg-gray-50">
              <tr>
                <th v-permission="['plugin:link:submit:manage']" 
-                   scope="col" class="px-4 py-3">
-                 <div class="w-max flex items-center"> </div>
+                   scope="col" class=":uno: px-4 py-3">
+                 <div class=":uno: w-max flex items-center"> </div>
                </th>
-               <th scope="col" class="px-4 py-3">
-                 <div class="w-max flex items-center">网站LOGO </div>
+               <th scope="col" class=":uno: px-4 py-3">
+                 <div class=":uno: w-max flex items-center">网站LOGO </div>
                </th>
-               <th scope="col" class="px-4 py-3">
-                 <div class="w-max flex items-center">网站名称 </div>
+               <th scope="col" class=":uno: px-4 py-3">
+                 <div class=":uno: w-max flex items-center">网站名称 </div>
                </th>
-               <th scope="col" class="px-4 py-3">
-                 <div class="w-max flex items-center">网站地址 </div>
+               <th scope="col" class=":uno: px-4 py-3">
+                 <div class=":uno: w-max flex items-center">网站地址 </div>
                </th>
-               <th scope="col" class="px-4 py-3">
-                 <div class="w-max flex items-center">网站描述</div>
+               <th scope="col" class=":uno: px-4 py-3">
+                 <div class=":uno: w-max flex items-center">网站描述</div>
                </th>
-               <th scope="col" class="px-4 py-3">
-                 <div class="w-max flex items-center">邮箱</div>
+               <th scope="col" class=":uno: px-4 py-3">
+                 <div class=":uno: w-max flex items-center">邮箱</div>
                </th>
-               <th scope="col" class="px-4 py-3">
-                 <div class="w-max flex items-center">RSS 地址</div>
+               <th scope="col" class=":uno: px-4 py-3">
+                 <div class=":uno: w-max flex items-center">RSS 地址</div>
                </th>
-               <th scope="col" class="px-4 py-3">
-                 <div class="w-max flex items-center">友链分组</div>
+               <th scope="col" class=":uno: px-4 py-3">
+                 <div class=":uno: w-max flex items-center">友链分组</div>
                </th>
-               <th scope="col" class="px-4 py-3">
-                 <div class="w-max flex items-center">状态</div>
+               <th scope="col" class=":uno: px-4 py-3">
+                 <div class=":uno: w-max flex items-center">状态</div>
                </th>
-               <th scope="col" class="px-4 py-3">
-                 <div class="w-max flex items-center">类型</div>
+               <th scope="col" class=":uno: px-4 py-3">
+                 <div class=":uno: w-max flex items-center">类型</div>
                </th>
-               <th scope="col" class="px-4 py-3">
-                 <div class="w-max flex items-center">申请时间</div>
+               <th scope="col" class=":uno: px-4 py-3">
+                 <div class=":uno: w-max flex items-center">申请时间</div>
                </th>
-               <th scope="col" class="px-4 py-3" v-permission="['plugin:link:submit:manage']">
-                 <div class="w-max flex items-center">操作</div>
+               <th scope="col" class=":uno: px-4 py-3" v-permission="['plugin:link:submit:manage']">
+                 <div class=":uno: w-max flex items-center">操作</div>
                </th>
              </tr>
           </thead>
           <tbody>
-             <tr v-for="linkSubmit in linkSubmits" class="border-b last:border-none hover:bg-gray-100">
-               <td class="px-4 py-4" 
+             <tr v-for="linkSubmit in linkSubmits" class=":uno: border-b last:border-none hover:bg-gray-100">
+               <td class=":uno: px-4 py-4" 
                    v-permission="['plugin:link:submit:manage']">
                  <input
                    v-model="selectedLinkSubmits"
                    :value="linkSubmit.metadata.name"
-                   class="h-4 w-4 rounded border-gray-300 text-indigo-600"
+                   class=":uno: h-4 w-4 rounded border-gray-300 text-indigo-600"
                    name="post-checkbox"
                    type="checkbox"
                  />
                </td>
-               <td class="px-4 py-4 table-td">
+               <td class=":uno: px-4 py-4 link-submit-table-td">
                  <VAvatar
                    circle
                    :src="linkSubmit?.spec.logo"
@@ -367,19 +367,19 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
                    size="md"
                  ></VAvatar>
                </td>
-               <td class="px-4 py-4 table-td">{{ linkSubmit?.spec.displayName }}</td>
-               <td class="px-4 py-4 table-td"><a :href="linkSubmit?.spec.url" target="_blank">{{ linkSubmit?.spec.url }}</a></td>
-               <td class="px-4 py-4 table-td">{{ linkSubmit?.spec.description }}</td>
-               <td class="px-4 py-4 table-td">{{ linkSubmit?.spec.email }}</td>
-               <td class="px-4 py-4 table-td">
+               <td class=":uno: px-4 py-4 link-submit-table-td">{{ linkSubmit?.spec.displayName }}</td>
+               <td class=":uno: px-4 py-4 link-submit-table-td"><a :href="linkSubmit?.spec.url" target="_blank">{{ linkSubmit?.spec.url }}</a></td>
+               <td class=":uno: px-4 py-4 link-submit-table-td">{{ linkSubmit?.spec.description }}</td>
+               <td class=":uno: px-4 py-4 link-submit-table-td">{{ linkSubmit?.spec.email }}</td>
+               <td class=":uno: px-4 py-4 link-submit-table-td">
                  <a :href="linkSubmit?.spec.rssUrl" target="_blank">{{ linkSubmit?.spec.rssUrl }}</a>
                </td>
-               <td class="px-4 py-4 table-td">
+               <td class=":uno: px-4 py-4 link-submit-table-td">
                  <span>
                    {{ getGroup(linkSubmit?.spec.groupName || '') }}
                  </span>
                </td>
-               <td class="px-4 py-4 table-td">
+               <td class=":uno: px-4 py-4 link-submit-table-td">
                  <span
                    :style="{
                      'background': linkSubmit?.spec.status === 'review' ? '#D1FAE5'
@@ -400,7 +400,7 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
                    {{ statusText(linkSubmit?.spec.status) }}
                  </span>
                </td>
-               <td class="px-4 py-4 table-td">
+               <td class=":uno: px-4 py-4 link-submit-table-td">
                  <span
                    :style="{
                      'border': '1px solid ' + (linkSubmit?.spec.type === 'add' ? '#3B82F6' : '#A78BFA'),
@@ -414,8 +414,8 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
                    {{ typeText(linkSubmit?.spec.type) }}
                  </span>
                </td>
-               <td class="px-4 py-4 table-td">{{ formatDatetime(linkSubmit?.metadata.creationTimestamp) }}</td>
-               <td class="px-4 py-4 table-td" v-permission="['plugin:link:submit:manage']">
+               <td class=":uno: px-4 py-4 link-submit-table-td">{{ formatDatetime(linkSubmit?.metadata.creationTimestamp) }}</td>
+               <td class=":uno: px-4 py-4 link-submit-table-td" v-permission="['plugin:link:submit:manage']">
                  <button v-if="linkSubmit.spec.status == LinkSubmitSpecStatusEnum.Pending" @click="handleOpenCheckModal(linkSubmit)">审核</button>&nbsp;&nbsp;
                  <button @click="handleDelete(linkSubmit)">删除</button>
                </td>
@@ -436,38 +436,3 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
   </VCard>
   
 </template>
-
-<style scoped lang="scss">
-
-.table-td {
-  text-align: left !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ant-link {
-  max-width: 250px;
-  border-bottom: 0;
-  text-align: left !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ant-td {
-  max-width: 410px;
-  border-bottom: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 3;
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  padding-right: 1rem;
-  padding-bottom: 0rem;
-  margin-bottom: 1.1em;
-}
-
-
-</style>
