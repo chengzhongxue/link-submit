@@ -2,6 +2,8 @@ apiVersion: plugin.halo.run/v1alpha1
 kind: Plugin
 metadata:
   name: link-submit
+  annotations:
+    "store.halo.run/app-id": "app-glejqzwk"
 spec:
   enabled: true
   requires: ">=2.21.0"
@@ -13,7 +15,7 @@ spec:
   logo: logo.svg
   configMapName: link-submit-configMap
   settingName: link-submit-settings
-  homepage: https://github.com/chengzhongxue/link-submit#readme
+  homepage: https://www.halo.run/store/apps/app-glejqzwk
   repo: https://github.com/chengzhongxuev/link-submit
   issues: https://github.com/chengzhongxue/link-submit/issues
   displayName: "友链自助提交插件"
