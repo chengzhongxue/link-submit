@@ -16,4 +16,5 @@ jobs:
       node-version: "20"
       pnpm-version: "10"
       app-id: app-glejqzwk
-      ui-path: "ui"
+      skip-node-setup: false
+      ui-path: "."
