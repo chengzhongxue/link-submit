@@ -100,7 +100,7 @@ public class NotificationReasonPublisher {
             notificationReasonEmitter.emit(ADMIN_LINK_SUBMIT,
                 builder -> {
                     var attributes = ReasonData.builder()
-                        .email(email)
+                        .email(linkSubmit.getSpec().getEmail())
                         .displayName(spec.getDisplayName())
                         .url(spec.getUrl())
                         .description(spec.getDescription())
