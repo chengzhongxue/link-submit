@@ -41,7 +41,7 @@ public class LinkSubmit extends AbstractExtension {
 
         private String description;
 
-        private String updateDescription;
+        private String oldUrl;
 
         private String email;
 

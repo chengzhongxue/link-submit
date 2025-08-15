@@ -56,7 +56,7 @@ public class LinkSubmitServiceImpl implements LinkSubmitService {
         String logo = createLinkSubmitRequest.getLogo();
         String email = createLinkSubmitRequest.getEmail();
         LinkSubmit.LinkSubmitType type = createLinkSubmitRequest.getType();
-
+        String oldUrl = createLinkSubmitRequest.getOldUrl();
 
         if (StringUtils.isEmpty(url)) {
             return Mono.error(new ServerWebInputException("网站地址不能为空！"));
@@ -73,7 +73,14 @@ public class LinkSubmitServiceImpl implements LinkSubmitService {
         if (!StringUtils.isEmpty(email) && !commonUtil.isValidEmail(email)) {
             return Mono.error(new ServerWebInputException("邮箱格式有误！"));
         }
+
         String domain = LinkUtil.getDomain(url);
+        if (type.equals(LinkSubmit.LinkSubmitType.update)) {
+            if (StringUtils.isEmpty(oldUrl)) {
+                return Mono.error(new ServerWebInputException("请填写旧的站点链接！"));
+            }
+            domain = LinkUtil.getDomain(oldUrl);
+        }
         return linkService.isExists(domain)
             .flatMap(exists -> {
                 if (type.equals(LinkSubmit.LinkSubmitType.add)) {
@@ -97,7 +104,7 @@ public class LinkSubmitServiceImpl implements LinkSubmitService {
                 linkSubmitSpec.setLogo(logo);
                 linkSubmitSpec.setDescription(createLinkSubmitRequest.getDescription());
                 if (type.equals(LinkSubmit.LinkSubmitType.update)) {
-                    linkSubmitSpec.setUpdateDescription(createLinkSubmitRequest.getUpdateDescription());
+                    linkSubmitSpec.setOldUrl(createLinkSubmitRequest.getOldUrl());
                 }
                 linkSubmitSpec.setEmail(email);
                 linkSubmitSpec.setGroupName(createLinkSubmitRequest.getGroupName());

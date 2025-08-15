@@ -108,7 +108,7 @@ public class AnonymousEndpoint implements CustomEndpoint {
 
         private String description;
 
-        private String updateDescription;
+        private String oldUrl;
 
         private String email;
 

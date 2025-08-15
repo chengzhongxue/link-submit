@@ -127,7 +127,7 @@ export class LinkSubmitModal extends LitElement {
       displayName: formData.get('displayName'),
       logo: formData.get('logo'),
       description: formData.get('description'),
-      updateDescription: formData.get('updateDescription'),
+      oldUrl: formData.get('oldUrl'),
       email: formData.get('email'),
       groupName: formData.get('groupName'),
       rssUrl: formData.get('rssUrl'),
@@ -260,8 +260,8 @@ export class LinkSubmitModal extends LitElement {
 
             ${this.selectedType === 'update' ? html`
               <div class="flex flex-col gap-2">
-                <label for="textarea-update-description" class="form-label">更新说明</label>
-                <textarea id="textarea-update-description" name="updateDescription" rows="2" class="form-input"></textarea>
+                <label for="textarea-old-url" class="form-label">旧的网址</label>
+                <input type="url" name="oldUrl" id="textarea-old-url" required class="form-input"></input>
               </div>
             ` : ''}
 
