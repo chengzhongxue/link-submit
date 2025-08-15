@@ -1,16 +1,29 @@
 {
   "type": "module",
   "scripts": {
-    "dev": "NODE_ENV=development rspack build --watch",
-    "build": "NODE_ENV=production rspack build",
-    "type-check": "vue-tsc --noEmit -p tsconfig.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "prettier": "prettier --write './**/*.{ts,json,yaml,yml,html,vue}'"
+      "build": "rsbuild build",
+      "dev": "rsbuild build --env-mode development --watch",
+      "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path ../.gitignore",
+      "prettier": "prettier --write src/",
+      "type-check": "vue-tsc --build --force"
   },
+    "prettier": {
+        "arrowParens": "always",
+        "bracketSpacing": true,
+        "endOfLine": "lf",
+        "plugins": [
+            "prettier-plugin-organize-imports"
+        ],
+        "printWidth": 100,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "es5",
+        "useTabs": false
+    },
   "dependencies": {
-    "@halo-dev/api-client": "^2.19.0",
-    "@halo-dev/components": "^2.19.0",
-    "@halo-dev/console-shared": "^2.19.0",
+    "@halo-dev/api-client": "^2.21.1",
+    "@halo-dev/components": "^2.21.0",
+    "@halo-dev/console-shared": "^2.21.0",
     "vue": "^3.4.31",
     "@tanstack/vue-query": "^4.26.1",
     "dayjs": "^1.11.9",
@@ -19,6 +32,7 @@
     "@vueuse/router": "^10.6.0"
   },
   "devDependencies": {
+      "@halo-dev/ui-plugin-bundler-kit": "^2.21.2",
     "@iconify/json": "^2.2.224",
     "@rspack/cli": "1.4.0-beta.0",
     "@rspack/core": "1.4.0-beta.0",
@@ -36,6 +50,7 @@
     "eslint-plugin-vue": "^9.26.0",
     "npm-run-all2": "^6.2.0",
     "prettier": "^3.3.2",
+    "prettier-plugin-organize-imports": "^4.2.0",
     "style-loader": "^4.0.0",
     "typescript": "~5.5.3",
     "unocss": "^66.2.0",

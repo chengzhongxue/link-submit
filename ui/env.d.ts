@@ -1,4 +1,5 @@
 /// <reference types="unplugin-icons/types/vue" />
+/// <reference types="@rsbuild/core/types" />
 
 declare module "axios" {
   export interface AxiosRequestConfig {
