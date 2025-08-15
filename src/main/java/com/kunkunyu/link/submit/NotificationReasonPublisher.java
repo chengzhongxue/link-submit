@@ -87,7 +87,7 @@ public class NotificationReasonPublisher {
         private final ExternalLinkProcessor externalLinkProcessor;
 
 
-        public void publishReasonBy(LinkSubmit linkSubmit,String email) {
+        public void publishReasonBy(LinkSubmit linkSubmit,String adminEmail) {
             String url = externalLinkProcessor.processLink("/console/link-submit");
             var spec = linkSubmit.getSpec();
             var reasonSubject = Reason.Subject.builder()
@@ -100,7 +100,8 @@ public class NotificationReasonPublisher {
             notificationReasonEmitter.emit(ADMIN_LINK_SUBMIT,
                 builder -> {
                     var attributes = ReasonData.builder()
-                        .email(linkSubmit.getSpec().getEmail())
+                        .adminEmail(adminEmail)
+                        .email(spec.getEmail())
                         .displayName(spec.getDisplayName())
                         .url(spec.getUrl())
                         .description(spec.getDescription())
@@ -110,14 +111,14 @@ public class NotificationReasonPublisher {
                         .reviewUrl(url)
                         .build();
                     builder.attributes(ReasonDataConverter.toAttributeMap(attributes))
-                        .author(UserIdentity.anonymousWithEmail(email))
+                        .author(UserIdentity.anonymousWithEmail(adminEmail))
                         .subject(reasonSubject);
                 }).block();
         }
 
 
         @Builder
-        record ReasonData(String email, String displayName, String url, String description,
+        record ReasonData(String adminEmail, String email, String displayName, String url, String description,
                           String logo, String type, Boolean review, String reviewUrl) {
         }
     }

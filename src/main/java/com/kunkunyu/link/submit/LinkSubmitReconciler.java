@@ -82,7 +82,7 @@ public class LinkSubmitReconciler implements Reconciler<Reconciler.Request> {
     void adminNoticeSubscription(String email) {
         var interestReason = new Subscription.InterestReason();
         interestReason.setReasonType(ADMIN_LINK_SUBMIT);
-        interestReason.setExpression("props.email == '%s'".formatted(email));
+        interestReason.setExpression("props.adminEmail == '%s'".formatted(email));
         var subscriber = new Subscription.Subscriber();
         subscriber.setName(UserIdentity.anonymousWithEmail(email).name());
         notificationCenter.subscribe(subscriber, interestReason).block();

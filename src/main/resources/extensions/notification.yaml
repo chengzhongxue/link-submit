@@ -9,6 +9,9 @@ spec:
   displayName: "友链自助提交通知管理员"
   description: "有提交的友链通知管理员"
   properties:
+    - name: adminEmail
+      type: string
+      description: "管理员邮箱"
     - name: email
       type: string
       description: "邮箱"
