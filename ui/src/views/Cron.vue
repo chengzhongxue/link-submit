@@ -116,7 +116,7 @@ const cronOptions = [{
 
 <template>
   <Transition mode="out-in" name="fade">
-    <div class="bg-white p-4">
+    <div class=":uno: bg-white p-4">
       <div>
         <FormKit
           id="cron-setting"
@@ -178,8 +178,8 @@ const cronOptions = [{
           </FormKit>
         </FormKit>
       </div>
-      <div v-permission="['plugin:link:submit:manage']" class="pt-5">
-        <div class="flex justify-start">
+      <div v-permission="['plugin:link:submit:manage']" class=":uno: pt-5">
+        <div class=":uno: flex justify-start">
           <VButton
             :loading="saveIsLoading"
             :disabled="cronIsLoading"

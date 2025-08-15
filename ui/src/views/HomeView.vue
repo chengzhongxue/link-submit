@@ -33,21 +33,21 @@ const activeIndex = useRouteQuery<string>("tab", tabs.value[0].id);
 
   <VPageHeader title="友链自助提交管理">
     <template #icon>
-      <LinkVariantPlus class="mr-2 self-center"/>
+      <LinkVariantPlus class=":uno: mr-2 self-center"/>
     </template>
   </VPageHeader>
 
-  <div class="m-0 md:m-4">
-    <VCard :body-class="['!p-0']">
+  <div class=":uno: m-0 md:m-4">
+    <VCard :body-class="[':uno: !p-0']">
       <template #header>
         <VTabbar
           v-model:active-id="activeIndex"
           :items="tabs.map((item) => ({ id: item.id, label: item.label }))"
-          class="w-full !rounded-none"
+          class=":uno: w-full !rounded-none"
           type="outline"
         ></VTabbar>
       </template>
-      <div class="bg-white">
+      <div class=":uno: bg-white">
         <SubmitList ref="submitList" v-if="activeIndex=='submitList'"/>
         <Cron ref="cron" v-if="activeIndex=='cron'"/>
       </div>

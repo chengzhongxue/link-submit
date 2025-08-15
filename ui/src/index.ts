@@ -1,7 +1,8 @@
 import { definePlugin } from "@halo-dev/console-shared";
-import HomeView from "./views/HomeView.vue";
-import { markRaw } from "vue";
+import { defineAsyncComponent, markRaw } from "vue";
 import LinkVariantPlus from "~icons/mdi/link-variant-plus";
+import "uno.css";
+import { VLoading } from "@halo-dev/components";
 
 export default definePlugin({
   components: {},
@@ -11,7 +12,10 @@ export default definePlugin({
       route: {
         path: "/link-submit",
         name: "友链自助提交插件",
-        component: HomeView,
+        component: defineAsyncComponent({
+          loader: () => import("@/views/HomeView.vue"),
+          loadingComponent: VLoading,
+        }),
         meta: {
           title: "友链自助提交插件",
           permissions: ["plugin:link:submit:view"],

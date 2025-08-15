@@ -1,6 +1,8 @@
 # link-submit
 - 支持自助提交和修改友链
 
+## 致谢
+该插件部分代码由 [柳意梧情](https://github.com/liuyiwuqing) 提供
 
 ## 📃文档
 https://docs.kunkunyu.com/docs/link-submit

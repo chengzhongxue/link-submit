@@ -60,8 +60,8 @@ halo {
     docker {
         // windows 需要改为 npipe:////./pipe/docker_engine
         // linux、macos 需要改为 unix:///var/run/docker.sock
-        url = 'npipe:////./pipe/docker_engine'
-        apiVersion = '1.47'
+        url = 'unix:///var/run/docker.sock'
+        apiVersion = '1.48'
     }
     port = 8081
 

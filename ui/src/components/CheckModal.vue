@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import {Toast, VButton, VModal, VSpace} from "@halo-dev/components";
-import {defineEmits, ref, watch, nextTick} from "vue";
+import {defineEmits, ref, resolveComponent} from "vue";
 import {type CheckLinkSubmitRequest, type LinkSubmit, LinkSubmitSpecTypeEnum} from "@/api/generated";
 import {linkSubmitApiClient} from "@/api";
 import {useQueryClient} from "@tanstack/vue-query";
 import {axiosInstance} from "@halo-dev/api-client";
 import type {LinkList} from "@/domain";
+const vCodemirror = resolveComponent("VCodemirror");
 
 const props = withDefaults(
   defineProps<{
@@ -30,6 +31,12 @@ const modal = ref<InstanceType<typeof VModal> | null>(null);
 
 
 const handleCheck = async () => {
+  if (formState.value.checkStatus && props.linkSubmit?.spec.type == LinkSubmitSpecTypeEnum.Update) {
+    if (formState.value.linkName == null || formState.value.linkName == '') {
+      Toast.error('请选择链接!');
+      return;
+    }
+  }
   try {
     saving.value = true;
     await linkSubmitApiClient.linkSubmit.check({
@@ -78,19 +85,28 @@ const handleSelectLinkRemote = {
 <template>
   <VModal
     ref="modal"
-    :title="linkSubmit.spec.type == LinkSubmitSpecTypeEnum.Add ? '友链提交审核' : '友链修改审核'"
+    :title="linkSubmit.spec.type == LinkSubmitSpecTypeEnum.Add ? '友链提交审核' : '友链审核'"
     :width="650"
     @close="emit('close')"
   >
     <FormKit
         id="check-form"
-        v-model="formState"
         name="check-form"
         type="form"
         :config="{ validationVisibility: 'submit' }"
         @submit="handleCheck"
     >
       <FormKit
+        :disabled="true"
+        v-if="linkSubmit.spec.type == LinkSubmitSpecTypeEnum.Update"
+        :value="linkSubmit.spec.updateDescription"
+        name="updateDescription"
+        type="code"
+        label="更新说明"
+        height="120px"
+      />
+      <FormKit
+        v-model="formState.checkStatus"
         :options="[
             { label: '通过', value: true},
             { label: '不通过', value: false},
@@ -100,6 +116,7 @@ const handleSelectLinkRemote = {
         type="select"
       ></FormKit>
       <FormKit
+        v-model="formState.linkName"
         v-if="linkSubmit.spec.type == LinkSubmitSpecTypeEnum.Update"
         type="select"
         label="链接"
@@ -108,9 +125,11 @@ const handleSelectLinkRemote = {
         searchable
         remote
         :remote-option="handleSelectLinkRemote"
-        validation="required"
+        autoSelect="false"
+        clearable="true"
       />
       <FormKit
+        v-model="formState.reason"
         v-if="formState.checkStatus === false"
         type="textarea"
         name="reason"
