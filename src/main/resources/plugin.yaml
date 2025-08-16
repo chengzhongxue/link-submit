@@ -16,7 +16,7 @@ spec:
   configMapName: link-submit-configMap
   settingName: link-submit-settings
   homepage: https://www.halo.run/store/apps/app-glejqzwk
-  repo: https://github.com/chengzhongxuev/link-submit
+  repo: https://github.com/chengzhongxue/link-submit
   issues: https://github.com/chengzhongxue/link-submit/issues
   displayName: "友链自助提交插件"
   description: "访问者可以自助提交友链，并在后台管理页面进行审核。"
