@@ -81,6 +81,7 @@ public class LinkSubmitServiceImpl implements LinkSubmitService {
             }
             domain = LinkUtil.getDomain(oldUrl);
         }
+        String finalDomain = domain;
         return linkService.isExists(domain)
             .flatMap(exists -> {
                 if (type.equals(LinkSubmit.LinkSubmitType.add)) {
@@ -112,7 +113,7 @@ public class LinkSubmitServiceImpl implements LinkSubmitService {
                 linkSubmitSpec.setType(createLinkSubmitRequest.getType());
                 linkSubmitSpec.setStatus(LinkSubmit.LinkSubmitStatus.pending);
                 linkSubmit.setSpec(linkSubmitSpec);
-                return createNewLink(linkSubmit);
+                return createNewLink(finalDomain,linkSubmit);
             });
     }
 
@@ -169,14 +170,13 @@ public class LinkSubmitServiceImpl implements LinkSubmitService {
         return linkService.update(link);
     }
 
-    private Mono<LinkSubmit> createNewLink(LinkSubmit linkSubmit) {
+    private Mono<LinkSubmit> createNewLink(String submitDomain, LinkSubmit linkSubmit) {
 
         var basicConfig = settingConfigLinkSubmit.getBasicConfig();
 
         return basicConfig.flatMap(basic -> {
             String domain = commonUtil.getDomain();
             var spec = linkSubmit.getSpec();
-            String urlDomain = LinkUtil.getDomain(spec.getUrl());
 
             if (LinkUtil.hasLinkByUrl(spec.getUrl(), domain)) {
                 return Mono.error(new ServerWebInputException("请不要输入本站地址！"));
@@ -188,14 +188,13 @@ public class LinkSubmitServiceImpl implements LinkSubmitService {
                 }
             }
 
-
-            return linkSubmitExistence(urlDomain,spec.getType().name())
+            return linkSubmitExistence(submitDomain,spec.getType().name())
                 .flatMap(exists -> {
                     boolean checkFlag = basic.isAutoAudit();
                     if (exists) {
                         return Mono.error(new ServerWebInputException("请勿重复提交，请等待审核！"));
                     }
-                    if (checkFlag) {
+                    if (checkFlag && linkSubmit.getSpec().getType().equals(LinkSubmit.LinkSubmitType.add)) {
                         return linkService.create(linkSubmit).flatMap(linkNew -> {
                             linkSubmit.getSpec().setStatus(LinkSubmit.LinkSubmitStatus.review);
                             return client.create(linkSubmit);
@@ -209,13 +208,15 @@ public class LinkSubmitServiceImpl implements LinkSubmitService {
 
     public Mono<Boolean> linkSubmitExistence(String url,String type) {
         var listOptions = new ListOptions();
-        listOptions.setFieldSelector(FieldSelector.of(
-            and(equal("spec.type", type),
-                equal("spec.status", LinkSubmit.LinkSubmitStatus.pending.name()),
-                contains("spec.url", url))
-        ));
-        return client.listAll(LinkSubmit.class, listOptions, Sort.unsorted())
-            .collectList()
-            .flatMap(linkSubmits -> Mono.just(linkSubmits.size() > 0));
+        FieldSelector fieldSelector = FieldSelector.of(and(equal("spec.type", type),
+            equal("spec.status", LinkSubmit.LinkSubmitStatus.pending.name())));
+        if (type.equals(LinkSubmit.LinkSubmitType.add)) {
+            fieldSelector =  fieldSelector.andQuery(contains("spec.url",url));
+        }else {
+            fieldSelector =  fieldSelector.andQuery(contains("spec.oldUrl",url));
+        }
+
+        listOptions.setFieldSelector(fieldSelector);
+        return client.listAll(LinkSubmit.class, listOptions, Sort.unsorted()).hasElements();
     }
 }

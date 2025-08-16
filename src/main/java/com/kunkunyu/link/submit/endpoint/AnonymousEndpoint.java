@@ -4,7 +4,11 @@ import com.kunkunyu.link.submit.extension.LinkSubmit;
 import com.kunkunyu.link.submit.service.LinkService;
 import com.kunkunyu.link.submit.service.LinkSubmitService;
 import com.kunkunyu.link.submit.service.SettingConfigLinkSubmit;
+import com.kunkunyu.link.submit.utils.IpAddressUtils;
 import com.kunkunyu.link.submit.vo.LinkGroupVo;
+import io.github.resilience4j.ratelimiter.RateLimiter;
+import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
+import io.github.resilience4j.reactor.ratelimiter.operator.RateLimiterOperator;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -38,11 +42,15 @@ public class AnonymousEndpoint implements CustomEndpoint {
 
     private final LinkSubmitService linkSubmitService;
 
+    private final RateLimiterRegistry rateLimiterRegistry;
+
     public AnonymousEndpoint(SettingConfigLinkSubmit settingConfigLinkSubmit,
-        LinkService linkService, LinkSubmitService linkSubmitService) {
+        LinkService linkService, LinkSubmitService linkSubmitService,
+        RateLimiterRegistry rateLimiterRegistry) {
         this.settingConfigLinkSubmit = settingConfigLinkSubmit;
         this.linkService = linkService;
         this.linkSubmitService = linkSubmitService;
+        this.rateLimiterRegistry = rateLimiterRegistry;
     }
 
     @Override
@@ -90,8 +98,10 @@ public class AnonymousEndpoint implements CustomEndpoint {
     }
 
     Mono<ServerResponse> submit(ServerRequest request) {
+        RateLimiter rateLimiter = this.rateLimiterRegistry.rateLimiter("submit-link-" + IpAddressUtils.getIpAddress(request));
         return request.bodyToMono(CreateLinkSubmitRequest.class)
             .flatMap(linkSubmitService::createLinkSubmit)
+            .transformDeferred(RateLimiterOperator.of(rateLimiter))
             .flatMap(resultsVo -> ServerResponse.ok().bodyValue(resultsVo));
     }
 

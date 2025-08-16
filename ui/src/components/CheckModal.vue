@@ -99,11 +99,10 @@ const handleSelectLinkRemote = {
       <FormKit
         :disabled="true"
         v-if="linkSubmit.spec.type == LinkSubmitSpecTypeEnum.Update"
-        :value="linkSubmit.spec.updateDescription"
-        name="updateDescription"
-        type="code"
-        label="更新说明"
-        height="120px"
+api        :value="linkSubmit.spec.oldUrl"
+        name="oldUrl"
+        type="text"
+        label="旧的链接"
       />
       <FormKit
         v-model="formState.checkStatus"

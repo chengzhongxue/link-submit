@@ -23,8 +23,6 @@ public class LinkSubmit extends AbstractExtension {
 
     public static final String REVIEW_DESCRIPTION = "link.submit.kunkunyu.com/review-description";
 
-
-
     @Schema(requiredMode = REQUIRED)
     private LinkSubmitSpec spec;
 

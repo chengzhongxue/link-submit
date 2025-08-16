@@ -36,6 +36,11 @@ public class LinkSubmitPlugin extends BasePlugin {
                     simpleAttribute(LinkSubmit.class, linkSubmit -> linkSubmit.getSpec().getDescription()))
             );
             indexSpecs.add(new IndexSpec()
+                .setName("spec.oldUrl")
+                .setIndexFunc(
+                    simpleAttribute(LinkSubmit.class, linkSubmit -> linkSubmit.getSpec().getOldUrl()))
+            );
+            indexSpecs.add(new IndexSpec()
                 .setName("spec.type")
                 .setIndexFunc(simpleAttribute(LinkSubmit.class, linkSubmit -> {
                     var type = linkSubmit.getSpec().getType();

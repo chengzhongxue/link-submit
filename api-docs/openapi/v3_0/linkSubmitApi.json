@@ -2,10 +2,10 @@
   "openapi" : "3.0.1",
   "info" : {
     "title" : "Halo",
-    "version" : "2.21.0-beta.1"
+    "version" : "2.21.0"
   },
   "servers" : [ {
-    "url" : "http://localhost:56097",
+    "url" : "http://localhost:47181",
     "description" : "Generated server url"
   } ],
   "security" : [ {
@@ -837,6 +837,9 @@
           "logo" : {
             "type" : "string"
           },
+          "oldUrl" : {
+            "type" : "string"
+          },
           "rssUrl" : {
             "type" : "string"
           },
@@ -847,9 +850,6 @@
           "type" : {
             "type" : "string",
             "enum" : [ "add", "update" ]
-          },
-          "updateDescription" : {
-            "type" : "string"
           },
           "url" : {
             "type" : "string"
