@@ -210,7 +210,7 @@ public class LinkSubmitServiceImpl implements LinkSubmitService {
         var listOptions = new ListOptions();
         FieldSelector fieldSelector = FieldSelector.of(and(equal("spec.type", type),
             equal("spec.status", LinkSubmit.LinkSubmitStatus.pending.name())));
-        if (type.equals(LinkSubmit.LinkSubmitType.add)) {
+        if (type.equals(LinkSubmit.LinkSubmitType.add.name())) {
             fieldSelector =  fieldSelector.andQuery(contains("spec.url",url));
         }else {
             fieldSelector =  fieldSelector.andQuery(contains("spec.oldUrl",url));
