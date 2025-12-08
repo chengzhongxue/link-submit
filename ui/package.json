@@ -32,7 +32,7 @@
     "@vueuse/router": "^10.6.0"
   },
   "devDependencies": {
-      "@halo-dev/ui-plugin-bundler-kit": "^2.21.2",
+    "@halo-dev/ui-plugin-bundler-kit": "^2.21.2",
     "@iconify/json": "^2.2.224",
     "@rspack/cli": "1.4.0-beta.0",
     "@rspack/core": "1.4.0-beta.0",

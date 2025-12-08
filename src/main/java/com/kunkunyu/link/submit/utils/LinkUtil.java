@@ -1,7 +1,6 @@
 package com.kunkunyu.link.submit.utils;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
@@ -268,31 +267,10 @@ public class LinkUtil {
         try {
             HttpResponse response = HttpRequest.get(url).setConnectionTimeout(3000).execute();
             int statusCode = response.getStatus();
-            return statusCode >= 200 && statusCode < 300;
+            return statusCode == 200 || statusCode == 301 || statusCode == 302;
         } catch (Exception e) {
             return false;
         }
     }
-
-    public static boolean urlCheckerByChinaz(String url) {
-        try {
-            Document htmlDocument = Jsoup.parse(HttpUtil.get("https://tool.chinaz.com/pagestatus/?url=" + url));
-            if (ObjectUtil.isNotEmpty(htmlDocument)) {
-                Elements elementsByClass = htmlDocument.getElementsByClass("bor-b1s bg-list clearfix");
-                if (ObjectUtil.isNotEmpty(elementsByClass)) {
-                    Element element = elementsByClass.get(0);
-                    Elements elementsByTag = element.getElementsByTag("span");
-                    String code = elementsByTag.text();
-                    return code.equals("200");
-                }
-                return false;
-            }
-            return false;
-        } catch (Exception e) {
-            log.error("访问Chinaz网站失败！", e);
-        }
-        return false;
-    }
-
 
 }

@@ -147,7 +147,7 @@ public class CronLinkSubmitReconciler implements Reconciler<Reconciler.Request> 
                 String type = cleanConfig.getType();
                 if (!withoutCheckGroupNames.contains(link.getSpec().getGroupName())
                     && !CharSequenceUtil.equals(moveGroupName,link.getSpec().getGroupName())
-                    && !linkUtil.urlChecker(link.getSpec().getUrl()) && !linkUtil.urlCheckerByChinaz(link.getSpec().getUrl())) {
+                    && !linkUtil.urlChecker(link.getSpec().getUrl())) {
                     if (CharSequenceUtil.equals(type, DELETE)) {
                         linkService.delete(link).block();
                     } else if (CharSequenceUtil.equals(type, MOVE)) {
@@ -162,7 +162,7 @@ public class CronLinkSubmitReconciler implements Reconciler<Reconciler.Request> 
                     }
                 }else if (!withoutCheckGroupNames.contains(link.getSpec().getGroupName())
                     && CharSequenceUtil.equals(link.getSpec().getGroupName(),moveGroupName)) {
-                    if (linkUtil.urlChecker(link.getSpec().getUrl()) || linkUtil.urlCheckerByChinaz(link.getSpec().getUrl())) {
+                    if (linkUtil.urlChecker(link.getSpec().getUrl())) {
                         Map<String, String> annotations = link.getMetadata().getAnnotations();
                         if (ObjectUtil.isEmpty(annotations)) {
                             annotations = new HashMap<>();
