@@ -1,4 +1,3 @@
-
 import { defineConfig, presetWind3, transformerCompileClass } from "unocss";
 
 export default defineConfig({

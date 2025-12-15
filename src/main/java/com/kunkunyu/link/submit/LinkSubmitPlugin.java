@@ -5,11 +5,12 @@ import com.kunkunyu.link.submit.extension.LinkSubmit;
 import org.springframework.stereotype.Component;
 import run.halo.app.extension.Scheme;
 import run.halo.app.extension.SchemeManager;
-import run.halo.app.extension.index.IndexSpec;
+import run.halo.app.extension.index.IndexSpecs;
 import run.halo.app.plugin.BasePlugin;
 import run.halo.app.plugin.PluginContext;
 
-import static run.halo.app.extension.index.IndexAttributeFactory.simpleAttribute;
+import java.util.Optional;
+
 
 
 @Component
@@ -25,33 +26,36 @@ public class LinkSubmitPlugin extends BasePlugin {
     @Override
     public void start() {
         schemeManager.register(LinkSubmit.class, indexSpecs -> {
-            indexSpecs.add(new IndexSpec()
-                .setName("spec.url")
-                .setIndexFunc(
-                    simpleAttribute(LinkSubmit.class, linkSubmit -> linkSubmit.getSpec().getUrl()))
+            indexSpecs.add(IndexSpecs.<LinkSubmit, String>single("spec.url", String.class)
+                .indexFunc(post -> Optional.ofNullable(post.getSpec())
+                    .map(LinkSubmit.LinkSubmitSpec::getUrl)
+                    .orElse(null)
+                )
             );
-            indexSpecs.add(new IndexSpec()
-                .setName("spec.displayName")
-                .setIndexFunc(
-                    simpleAttribute(LinkSubmit.class, linkSubmit -> linkSubmit.getSpec().getDescription()))
+            indexSpecs.add(IndexSpecs.<LinkSubmit, String>single("spec.displayName", String.class)
+                .indexFunc(post -> Optional.ofNullable(post.getSpec())
+                    .map(LinkSubmit.LinkSubmitSpec::getDescription)
+                    .orElse(null)
+                )
             );
-            indexSpecs.add(new IndexSpec()
-                .setName("spec.oldUrl")
-                .setIndexFunc(
-                    simpleAttribute(LinkSubmit.class, linkSubmit -> linkSubmit.getSpec().getOldUrl()))
+            indexSpecs.add(IndexSpecs.<LinkSubmit, String>single("spec.oldUrl", String.class)
+                .indexFunc(post -> Optional.ofNullable(post.getSpec())
+                    .map(LinkSubmit.LinkSubmitSpec::getOldUrl)
+                    .orElse(null)
+                )
             );
-            indexSpecs.add(new IndexSpec()
-                .setName("spec.type")
-                .setIndexFunc(simpleAttribute(LinkSubmit.class, linkSubmit -> {
-                    var type = linkSubmit.getSpec().getType();
-                    return type == null ? null : type.name();
-                })));
-            indexSpecs.add(new IndexSpec()
-                .setName("spec.status")
-                .setIndexFunc(simpleAttribute(LinkSubmit.class, linkSubmit -> {
-                    var status = linkSubmit.getSpec().getStatus();
-                    return status == null ? null : status.name();
-                })));
+            indexSpecs.add(IndexSpecs.<LinkSubmit, LinkSubmit.LinkSubmitType>single("spec.type", LinkSubmit.LinkSubmitType.class)
+                .indexFunc(post -> Optional.ofNullable(post.getSpec())
+                    .map(LinkSubmit.LinkSubmitSpec::getType)
+                    .orElse(null)
+                )
+            );
+            indexSpecs.add(IndexSpecs.<LinkSubmit, LinkSubmit.LinkSubmitStatus>single("spec.status", LinkSubmit.LinkSubmitStatus.class)
+                .indexFunc(post -> Optional.ofNullable(post.getSpec())
+                    .map(LinkSubmit.LinkSubmitSpec::getStatus)
+                    .orElse(null)
+                )
+            );
         });
         schemeManager.register(CronLinkSubmit.class);
     }

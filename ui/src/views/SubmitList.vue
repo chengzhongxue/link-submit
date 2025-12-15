@@ -12,7 +12,6 @@ import {
   VAvatar} from "@halo-dev/components";
 import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import {computed, ref, watch} from "vue";
-import { formatDatetime } from "@/utils/date";
 import {useRouteQuery} from "@vueuse/router";
 import {linkSubmitApiClient, linkSubmitCoreApiClient} from "@/api";
 import {type LinkSubmit, LinkSubmitSpecStatusEnum} from "@/api/generated";
@@ -20,6 +19,7 @@ import {axiosInstance} from "@halo-dev/api-client";
 import type {LinkGroup, LinkGroupList} from "@/domain";
 import {linkSubmitStatusOptions, linkSubmitTypeOptions} from "@/constant";
 import CheckModal from "@/components/CheckModal.vue";
+import { utils } from '@halo-dev/ui-shared'
 
 const queryClient = useQueryClient();
 
@@ -219,7 +219,7 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
 </script>
 <template>
   <CheckModal
-    v-if="linkSubmitCheckModal"
+    v-if="linkSubmitCheckModal && selectedLinkSubmit"
     :link-submit="selectedLinkSubmit"
     @close="linkSubmitCheckModal = false"
   />
@@ -414,7 +414,7 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
                    {{ typeText(linkSubmit?.spec.type) }}
                  </span>
                </td>
-               <td class=":uno: px-4 py-4 link-submit-table-td">{{ formatDatetime(linkSubmit?.metadata.creationTimestamp) }}</td>
+               <td class=":uno: px-4 py-4 link-submit-table-td">{{ utils.date.format(linkSubmit?.metadata.creationTimestamp) }}</td>
                <td class=":uno: px-4 py-4 link-submit-table-td" v-permission="['plugin:link:submit:manage']">
                  <button v-if="linkSubmit.spec.status == LinkSubmitSpecStatusEnum.Pending" @click="handleOpenCheckModal(linkSubmit)">审核</button>&nbsp;&nbsp;
                  <button @click="handleDelete(linkSubmit)">删除</button>

@@ -4,4 +4,6 @@ pluginManagement {
     }
 }
 rootProject.name = 'link-submit'
+include 'ui'
+include 'packages:link-submit-widget'
 

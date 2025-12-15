@@ -26,9 +26,9 @@ import org.springframework.web.server.ServerWebInputException;
 import run.halo.app.extension.router.selector.FieldSelector;
 
 import static com.kunkunyu.link.submit.extension.LinkSubmit.REVIEW_DESCRIPTION;
-import static run.halo.app.extension.index.query.QueryFactory.and;
-import static run.halo.app.extension.index.query.QueryFactory.contains;
-import static run.halo.app.extension.index.query.QueryFactory.equal;
+import static run.halo.app.extension.index.query.Queries.and;
+import static run.halo.app.extension.index.query.Queries.contains;
+import static run.halo.app.extension.index.query.Queries.equal;
 
 @Component
 @RequiredArgsConstructor

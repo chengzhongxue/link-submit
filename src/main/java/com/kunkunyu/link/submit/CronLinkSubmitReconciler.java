@@ -35,7 +35,8 @@ import run.halo.app.extension.router.selector.FieldSelector;
 import static com.kunkunyu.link.submit.Constant.DELETE;
 import static com.kunkunyu.link.submit.Constant.MOVE;
 import static com.kunkunyu.link.submit.Constant.ORIGINAL_GROUP_NAME;
-import static run.halo.app.extension.index.query.QueryFactory.all;
+import static run.halo.app.extension.ExtensionUtil.defaultSort;
+import static run.halo.app.extension.ExtensionUtil.notDeleting;
 
 @Component
 public class CronLinkSubmitReconciler implements Reconciler<Reconciler.Request> {
@@ -137,7 +138,7 @@ public class CronLinkSubmitReconciler implements Reconciler<Reconciler.Request> 
         Optional<SettingConfigLinkSubmit.BasicConfig> basicConfig =
             settingConfigLinkSubmit.getBasicConfig().blockOptional();
         var listOptions = new ListOptions();
-        listOptions.setFieldSelector(FieldSelector.of(all()));
+        listOptions.setFieldSelector(FieldSelector.of(notDeleting()));
         List<Link> links = client.listAll(Link.class, listOptions, defaultSort());
         if (!links.isEmpty()) {
             for (Link link : links) {
@@ -184,12 +185,6 @@ public class CronLinkSubmitReconciler implements Reconciler<Reconciler.Request> 
         }
 
     }
-
-    static Sort defaultSort() {
-        return Sort.by("metadata.creationTimestamp").descending();
-    }
-
-
 
     public Controller setupWith(ControllerBuilder builder) {
         return builder.extension(new CronLinkSubmit()).workerCount(1).build();

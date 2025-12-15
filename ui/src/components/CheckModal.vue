@@ -10,10 +10,9 @@ const vCodemirror = resolveComponent("VCodemirror");
 
 const props = withDefaults(
   defineProps<{
-    linkSubmit?: LinkSubmit;
+    linkSubmit: LinkSubmit;
   }>(),
   {
-    linkSubmit: undefined,
   }
 );
 
@@ -98,8 +97,8 @@ const handleSelectLinkRemote = {
     >
       <FormKit
         :disabled="true"
-        v-if="linkSubmit.spec.type == LinkSubmitSpecTypeEnum.Update"
-api        :value="linkSubmit.spec.oldUrl"
+        v-if="linkSubmit.spec.type == LinkSubmitSpecTypeEnum.Update" 
+        :value="linkSubmit.spec.oldUrl"
         name="oldUrl"
         type="text"
         label="旧的链接"
