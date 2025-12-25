@@ -7,19 +7,19 @@ spec:
     - group: basic
       label: 基本设置
       formSchema:
-        - $formkit: checkbox
+        - $formkit: switch
           name: loadPlugInResources
           id: loadPlugInResources
           label: 加载插件资源
           help: 主题自己适配提交弹框的可以关闭
           value: true
-        - $formkit: checkbox
+        - $formkit: switch
           if: $get(loadPlugInResources).value
           name: displayTheSubmitButton
           label: 显示提交按钮
           help: 显示页面提交按钮
           value: true
-        - $formkit: checkbox
+        - $formkit: switch
           name: autoAudit
           label: 开启自动审核
           value: false
