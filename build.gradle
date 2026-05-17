@@ -50,7 +50,7 @@ tasks.named('classes') {
 }
 
 halo {
-    version = '2.22.1'
+    version = '2.24'
     superAdminUsername = 'admin'
     superAdminPassword = 'admin'
     externalUrl = 'http://localhost:8081'

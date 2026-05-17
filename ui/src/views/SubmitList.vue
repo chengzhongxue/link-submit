@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { 
+import {
   VCard,
   IconRefreshLine,
   Dialog,
@@ -9,7 +9,8 @@ import {
   VPagination,
   Toast,
   VSpace,
-  VAvatar} from "@halo-dev/components";
+  VAvatar
+} from "@halo-dev/components";
 import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import {computed, ref, watch} from "vue";
 import {useRouteQuery} from "@vueuse/router";
@@ -19,7 +20,7 @@ import {axiosInstance} from "@halo-dev/api-client";
 import type {LinkGroup, LinkGroupList} from "@/domain";
 import {linkSubmitStatusOptions, linkSubmitTypeOptions} from "@/constant";
 import CheckModal from "@/components/CheckModal.vue";
-import { utils } from '@halo-dev/ui-shared'
+import {utils} from '@halo-dev/ui-shared'
 
 const queryClient = useQueryClient();
 
@@ -68,23 +69,23 @@ const {
   isFetching,
   refetch,
 } = useQuery({
-  queryKey: ["link-submits", page, size,selectedSort,selectedStatus,selectedType,keyword],
+  queryKey: ["link-submits", page, size, selectedSort, selectedStatus, selectedType, keyword],
   queryFn: async () => {
-    
-    const { data } = await linkSubmitApiClient.linkSubmit.listLinkSubmits(
+
+    const {data} = await linkSubmitApiClient.linkSubmit.listLinkSubmits(
       {
         page: page.value,
         size: size.value,
         sort: [selectedSort.value].filter(Boolean) as string[],
         status: selectedStatus.value,
-        type : selectedType.value,
+        type: selectedType.value,
         keyword: keyword.value
       }
     );
     total.value = data.total;
     return data.items;
   },
-  refetchInterval: (data) =>  {
+  refetchInterval: (data) => {
     const deleting = data?.filter(
       (linkSubmit) => !!linkSubmit.metadata.deletionTimestamp
     );
@@ -127,13 +128,12 @@ function getGroup(groupName: string) {
     return linkGroup?.spec.displayName;
   }
   return '未分组'
-  
+
 }
 
 
-
 const handleCheckAllChange = (e: Event) => {
-  const { checked } = e.target as HTMLInputElement;
+  const {checked} = e.target as HTMLInputElement;
   checkedAll.value = checked;
   if (checkedAll.value) {
     selectedLinkSubmits.value =
@@ -167,7 +167,7 @@ const handleDeleteInBatch = () => {
       } catch (e) {
         console.error(e);
       } finally {
-        queryClient.invalidateQueries({ queryKey: ["link-submits"] });
+        queryClient.invalidateQueries({queryKey: ["link-submits"]});
       }
     },
   });
@@ -191,19 +191,19 @@ const handleDelete = (linkSubmit: LinkSubmit) => {
       } catch (error) {
         console.error("删除失败，请稍后再试", error);
       } finally {
-        await queryClient.invalidateQueries({ queryKey: ["link-submits"] });
+        await queryClient.invalidateQueries({queryKey: ["link-submits"]});
       }
     },
   });
 }
 
-function statusText (status:string) {
+function statusText(status: string) {
   const item = linkSubmitStatusOptions.find(option => option.value === status);
 
   return item ? item.label : "未知";
 }
 
-function typeText (type:string) {
+function typeText(type: string) {
   const item = linkSubmitTypeOptions.find(option => option.value === type);
 
   return item ? item.label : "未知";
@@ -226,7 +226,7 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
   <VCard :body-class="[':uno: !p-0']">
     <template #header>
       <div class=":uno: block w-full bg-gray-50 px-4 py-3">
-        <div class=":uno: relative flex flex-col flex-wrap items-start gap-4 sm:flex-row sm:items-center" >
+        <div class=":uno: relative flex flex-col flex-wrap items-start gap-4 sm:flex-row sm:items-center">
           <div class=":uno: hidden items-center sm:flex" v-permission="['plugin:link:submit:manage']">
             <input
               v-model="checkedAll"
@@ -234,7 +234,7 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
               @change="handleCheckAllChange"
             />
           </div>
-          <div class=":uno: flex w-full flex-1 items-center sm:w-auto" >
+          <div class=":uno: flex w-full flex-1 items-center sm:w-auto">
             <VSpace v-if="selectedLinkSubmits.length" v-permission="['plugin:link:submit:manage']">
               <VButton type="danger" @click="handleDeleteInBatch">
                 删除
@@ -288,7 +288,7 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
         </div>
       </div>
     </template>
-    <VLoading v-if="isLoading" />
+    <VLoading v-if="isLoading"/>
 
     <Transition v-else-if="!linkSubmits?.length" appear name="fade">
       <VEmpty
@@ -297,7 +297,7 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
       >
         <template #actions>
           <VSpace>
-            <VButton @click="refetch()"> 刷新 </VButton>
+            <VButton @click="refetch()"> 刷新</VButton>
           </VSpace>
         </template>
       </VEmpty>
@@ -307,79 +307,103 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
       <div class=":uno: w-full relative overflow-x-auto">
         <table class=":uno: w-full text-sm text-left text-gray-500">
           <thead class=":uno: text-xs text-gray-700 uppercase bg-gray-50">
-             <tr>
-               <th v-permission="['plugin:link:submit:manage']" 
-                   scope="col" class=":uno: px-4 py-3">
-                 <div class=":uno: w-max flex items-center"> </div>
-               </th>
-               <th scope="col" class=":uno: px-4 py-3">
-                 <div class=":uno: w-max flex items-center">网站LOGO </div>
-               </th>
-               <th scope="col" class=":uno: px-4 py-3">
-                 <div class=":uno: w-max flex items-center">网站名称 </div>
-               </th>
-               <th scope="col" class=":uno: px-4 py-3">
-                 <div class=":uno: w-max flex items-center">网站地址 </div>
-               </th>
-               <th scope="col" class=":uno: px-4 py-3">
-                 <div class=":uno: w-max flex items-center">网站描述</div>
-               </th>
-               <th scope="col" class=":uno: px-4 py-3">
-                 <div class=":uno: w-max flex items-center">邮箱</div>
-               </th>
-               <th scope="col" class=":uno: px-4 py-3">
-                 <div class=":uno: w-max flex items-center">RSS 地址</div>
-               </th>
-               <th scope="col" class=":uno: px-4 py-3">
-                 <div class=":uno: w-max flex items-center">友链分组</div>
-               </th>
-               <th scope="col" class=":uno: px-4 py-3">
-                 <div class=":uno: w-max flex items-center">状态</div>
-               </th>
-               <th scope="col" class=":uno: px-4 py-3">
-                 <div class=":uno: w-max flex items-center">类型</div>
-               </th>
-               <th scope="col" class=":uno: px-4 py-3">
-                 <div class=":uno: w-max flex items-center">申请时间</div>
-               </th>
-               <th scope="col" class=":uno: px-4 py-3" v-permission="['plugin:link:submit:manage']">
-                 <div class=":uno: w-max flex items-center">操作</div>
-               </th>
-             </tr>
+          <tr>
+            <th v-permission="['plugin:link:submit:manage']"
+                scope="col" class=":uno: px-4 py-3">
+              <div class=":uno: w-max flex items-center"></div>
+            </th>
+            <th scope="col" class=":uno: px-4 py-3">
+              <div class=":uno: w-max flex items-center">网站LOGO</div>
+            </th>
+            <th scope="col" class=":uno: px-4 py-3">
+              <div class=":uno: w-max flex items-center">网站名称</div>
+            </th>
+            <th scope="col" class=":uno: px-4 py-3">
+              <div class=":uno: w-max flex items-center">网站地址</div>
+            </th>
+            <th scope="col" class=":uno: px-4 py-3">
+              <div class=":uno: w-max flex items-center">网站描述</div>
+            </th>
+            <th scope="col" class=":uno: px-4 py-3">
+              <div class=":uno: w-max flex items-center">邮箱</div>
+            </th>
+            <th scope="col" class=":uno: px-4 py-3">
+              <div class=":uno: w-max flex items-center">RSS 地址</div>
+            </th>
+            <th scope="col" class=":uno: px-4 py-3">
+              <div class=":uno: w-max flex items-center">友链分组</div>
+            </th>
+            <th scope="col" class=":uno: px-4 py-3">
+              <div class=":uno: w-max flex items-center">状态</div>
+            </th>
+            <th scope="col" class=":uno: px-4 py-3">
+              <div class=":uno: w-max flex items-center">类型</div>
+            </th>
+            <th scope="col" class=":uno: px-4 py-3">
+              <div class=":uno: w-max flex items-center">申请时间</div>
+            </th>
+            <th scope="col" class=":uno: px-4 py-3" v-permission="['plugin:link:submit:manage']">
+              <div class=":uno: w-max flex items-center">操作</div>
+            </th>
+          </tr>
           </thead>
           <tbody>
-             <tr v-for="linkSubmit in linkSubmits" class=":uno: border-b last:border-none hover:bg-gray-100">
-               <td class=":uno: px-4 py-4" 
-                   v-permission="['plugin:link:submit:manage']">
-                 <input
-                   v-model="selectedLinkSubmits"
-                   :value="linkSubmit.metadata.name"
-                   class=":uno: h-4 w-4 rounded border-gray-300 text-indigo-600"
-                   name="post-checkbox"
-                   type="checkbox"
-                 />
-               </td>
-               <td class=":uno: px-4 py-4 link-submit-table-td">
-                 <VAvatar
-                   circle
-                   :src="linkSubmit?.spec.logo"
-                   :alt="linkSubmit?.spec.displayName"
-                   size="md"
-                 ></VAvatar>
-               </td>
-               <td class=":uno: px-4 py-4 link-submit-table-td">{{ linkSubmit?.spec.displayName }}</td>
-               <td class=":uno: px-4 py-4 link-submit-table-td"><a :href="linkSubmit?.spec.url" target="_blank">{{ linkSubmit?.spec.url }}</a></td>
-               <td class=":uno: px-4 py-4 link-submit-table-td">{{ linkSubmit?.spec.description }}</td>
-               <td class=":uno: px-4 py-4 link-submit-table-td">{{ linkSubmit?.spec.email }}</td>
-               <td class=":uno: px-4 py-4 link-submit-table-td">
-                 <a :href="linkSubmit?.spec.rssUrl" target="_blank">{{ linkSubmit?.spec.rssUrl }}</a>
-               </td>
-               <td class=":uno: px-4 py-4 link-submit-table-td">
-                 <span>
+          <tr v-for="linkSubmit in linkSubmits" class=":uno: border-b last:border-none hover:bg-gray-100">
+            <td class=":uno: px-4 py-4"
+                v-permission="['plugin:link:submit:manage']">
+              <input
+                v-model="selectedLinkSubmits"
+                :value="linkSubmit.metadata.name"
+                class=":uno: h-4 w-4 rounded border-gray-300 text-indigo-600"
+                name="post-checkbox"
+                type="checkbox"
+              />
+            </td>
+            <td class=":uno: px-4 py-4">
+              <VAvatar
+                circle
+                :src="linkSubmit?.spec.logo"
+                :alt="linkSubmit?.spec.displayName"
+                size="md"
+              ></VAvatar>
+            </td>
+            <td class=":uno: px-4 py-4">
+              <div class="max-w-xs truncate" :title="linkSubmit?.spec.displayName">
+                {{ linkSubmit?.spec.displayName }}
+              </div>
+            </td>
+            <td class=":uno: px-4 py-4">
+              <a :href="linkSubmit?.spec.url"
+                 target="_blank"
+                 class="max-w-xs truncate block"
+                 :title="linkSubmit?.spec.url">
+                {{ linkSubmit?.spec.url }}
+              </a>
+            </td>
+            <td class=":uno: px-4 py-4">
+              <div class="max-w-md line-clamp-2" :title="linkSubmit?.spec.description">
+                {{ linkSubmit?.spec.description }}
+              </div>
+            </td>
+            <td class=":uno: px-4 py-4">
+              <div class="max-w-xs truncate" :title="linkSubmit?.spec.email">
+                {{ linkSubmit?.spec.email }}
+              </div>
+            </td>
+            <td class=":uno: px-4 py-4">
+              <a :href="linkSubmit?.spec.rssUrl"
+                 target="_blank"
+                 class="max-w-xs truncate block"
+                 :title="linkSubmit?.spec.rssUrl">
+                {{ linkSubmit?.spec.rssUrl }}
+              </a>
+            </td>
+            <td class=":uno: px-4 py-4">
+                 <span class="max-w-32 truncate block" :title="getGroup(linkSubmit?.spec.groupName || '')">
                    {{ getGroup(linkSubmit?.spec.groupName || '') }}
                  </span>
-               </td>
-               <td class=":uno: px-4 py-4 link-submit-table-td">
+            </td>
+            <td class=":uno: px-4 py-4">
                  <span
                    :style="{
                      'background': linkSubmit?.spec.status === 'review' ? '#D1FAE5'
@@ -394,13 +418,14 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
                      'borderRadius': '0.25rem',
                      'fontSize': '0.75rem',
                      'fontWeight': '600',
-                     'display': 'inline-block'
+                     'display': 'inline-block',
+                     'whiteSpace': 'nowrap'
                    }"
                  >
                    {{ statusText(linkSubmit?.spec.status) }}
                  </span>
-               </td>
-               <td class=":uno: px-4 py-4 link-submit-table-td">
+            </td>
+            <td class=":uno: px-4 py-4">
                  <span
                    :style="{
                      'border': '1px solid ' + (linkSubmit?.spec.type === 'add' ? '#3B82F6' : '#A78BFA'),
@@ -408,18 +433,28 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
                      'padding': '0.25rem 0.5rem',
                      'borderRadius': '0.25rem',
                      'fontSize': '0.75rem',
-                     'display': 'inline-block'
+                     'display': 'inline-block',
+                     'whiteSpace': 'nowrap'
                    }"
                  >
                    {{ typeText(linkSubmit?.spec.type) }}
                  </span>
-               </td>
-               <td class=":uno: px-4 py-4 link-submit-table-td">{{ utils.date.format(linkSubmit?.metadata.creationTimestamp) }}</td>
-               <td class=":uno: px-4 py-4 link-submit-table-td" v-permission="['plugin:link:submit:manage']">
-                 <button v-if="linkSubmit.spec.status == LinkSubmitSpecStatusEnum.Pending" @click="handleOpenCheckModal(linkSubmit)">审核</button>&nbsp;&nbsp;
-                 <button @click="handleDelete(linkSubmit)">删除</button>
-               </td>
-             </tr>
+            </td>
+            <td class=":uno: px-4 py-4 whitespace-nowrap">
+              {{ utils.date.format(linkSubmit?.metadata.creationTimestamp) }}
+            </td>
+            <td class=":uno: px-4 py-4" v-permission="['plugin:link:submit:manage']">
+              <div class="whitespace-nowrap">
+                <button v-if="linkSubmit.spec.status == LinkSubmitSpecStatusEnum.Pending"
+                        @click="handleOpenCheckModal(linkSubmit)">审核
+                </button>
+                <button v-if="linkSubmit.spec.status == LinkSubmitSpecStatusEnum.Pending" class="ml-2"
+                        @click="handleDelete(linkSubmit)">删除
+                </button>
+                <button v-else @click="handleDelete(linkSubmit)">删除</button>
+              </div>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
@@ -434,5 +469,40 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
       />
     </template>
   </VCard>
-  
 </template>
+
+<style scoped>
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.max-w-xs {
+  max-width: 20rem;
+}
+
+.max-w-md {
+  max-width: 28rem;
+}
+
+.max-w-32 {
+  max-width: 8rem;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+</style>
