@@ -57,7 +57,7 @@ const handleCheck = async () => {
 const handleSelectLinkRemote = {
   search: async ({ keyword, page, size }: { keyword: string; page: number; size: number }) => {
     const { data } = await axiosInstance.get<LinkList>(
-      `/apis/api.plugin.halo.run/v1alpha1/plugins/PluginLinks/links`,{
+      `/apis/api.link.halo.run/v1alpha1/links`,{
         params: {
           page: page,
           size: size,

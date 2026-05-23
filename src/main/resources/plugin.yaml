@@ -8,7 +8,7 @@ spec:
   enabled: true
   requires: ">=2.22.1"
   pluginDependencies:
-    "PluginLinks": ">=1.5.0"
+    "PluginLinks": ">=2.0.0"
   author:
     name: 困困鱼
     website: https://github.com/chengzhongxue
