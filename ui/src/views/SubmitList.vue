@@ -322,7 +322,7 @@ const handleOpenCheckModal = (linkSubmit?: LinkSubmit) => {
                  <div class=":uno: w-max flex items-center">网站地址 </div>
                </th>
                <th scope="col" class=":uno: px-4 py-3">
-                 <div class=":uno: w-max flex items-center">网站描述</div>
+                 <div class=":uno: w-max flex truncate items-center">网站描述</div>
                </th>
                <th scope="col" class=":uno: px-4 py-3">
                  <div class=":uno: w-max flex items-center">邮箱</div>
