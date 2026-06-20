@@ -1,6 +1,5 @@
 package com.kunkunyu.link.submit.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,10 +21,9 @@ import run.halo.app.extension.Metadata;
 import run.halo.app.extension.ReactiveExtensionClient;
 import run.halo.app.extension.Unstructured;
 import run.halo.app.extension.router.selector.FieldSelector;
+import run.halo.app.infra.utils.JsonUtils;
 
 import static org.springframework.data.domain.Sort.Order.asc;
-import static org.springframework.data.domain.Sort.Order.desc;
-
 
 @Service
 @RequiredArgsConstructor
@@ -34,9 +32,6 @@ public class LinkServiceImpl implements LinkService {
     private final ReactiveExtensionClient client;
 
     private final SettingConfigLinkSubmit settingConfigLinkSubmit;
-
-    private final ObjectMapper objectMapper = Unstructured.OBJECT_MAPPER;
-
 
     @Override
     public Mono<Link> getName(String name) {
@@ -50,7 +45,6 @@ public class LinkServiceImpl implements LinkService {
         return client.listAll(LinkGroup.class, listOptions, defaultLinkSort())
             .map(LinkGroupVo::from);
     }
-
 
     public Flux<Link> listLink() {
         var listOptions = new ListOptions();
@@ -106,12 +100,11 @@ public class LinkServiceImpl implements LinkService {
     }
 
     private Mono<Link> createByUnstructured(Link link) {
-        Map extensionMap = objectMapper.convertValue(link, Map.class);
+        Map extensionMap = JsonUtils.mapper().convertValue(link, Map.class);
         var extension = new Unstructured(extensionMap);
-        return client.create(extension).flatMap(unstructured -> {
-            var linkNew = objectMapper.convertValue(unstructured, Link.class);
-            return Mono.just(linkNew);
-        });
+        return client.create(extension).map(unstructured -> 
+            JsonUtils.mapper().convertValue(unstructured, Link.class)
+        );
     }
 
     public Mono<Link> delete(Link link) {
@@ -119,22 +112,20 @@ public class LinkServiceImpl implements LinkService {
     }
 
     private Mono<Link> deleteByUnstructured(Link link) {
-        Map extensionMap = objectMapper.convertValue(link, Map.class);
+        Map extensionMap = JsonUtils.mapper().convertValue(link, Map.class);
         var extension = new Unstructured(extensionMap);
-        return client.delete(extension).flatMap(unstructured -> {
-            var linkDel = objectMapper.convertValue(unstructured, Link.class);
-            return Mono.just(linkDel);
-        });
+        return client.delete(extension).map(unstructured -> 
+            JsonUtils.mapper().convertValue(unstructured, Link.class)
+        );
     }
 
     @Override
     public Mono<Link> update(Link link) {
-        Map extensionMap = objectMapper.convertValue(link, Map.class);
+        Map extensionMap = JsonUtils.mapper().convertValue(link, Map.class);
         var extension = new Unstructured(extensionMap);
-        return client.update(extension).flatMap(unstructured -> {
-            var linkNew = objectMapper.convertValue(unstructured, Link.class);
-            return Mono.just(linkNew);
-        });
+        return client.update(extension).map(unstructured -> 
+            JsonUtils.mapper().convertValue(unstructured, Link.class)
+        );
     }
 
     static Sort defaultLinkSort() {
